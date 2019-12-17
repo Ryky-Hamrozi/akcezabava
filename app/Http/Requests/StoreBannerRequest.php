@@ -15,7 +15,7 @@ class StoreBannerRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required|mimes:jpeg,svg,png|max:128',
+            'image' => 'required|mimes:jpeg,svg,png|max:2056',
         ];
     }
 

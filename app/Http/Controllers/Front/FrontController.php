@@ -38,16 +38,19 @@ class FrontController extends Controller
                         ->paginate(5);
         } 
         
-        $carouselBanners = Banner::where('location','=','Karusel')->doesntHave('event')->orWhereHas('event', function($query){
-            
-        });
+        $carouselBanners = Banner::all()->where('location','=', Banner::POSITION_CAROUSEL);
+
+        $actionBanner = Banner::all()->where('location', '=', Banner::POSITION_ACTION);
+
         return view('front.homepage',[
             'categories' => $categories,
             'allCategories' => $allCategories,
             'events' => $events,
             'districts' => $districts,
-            'categoryId' => $categoryId
-            ]);
+            'categoryId' => $categoryId,
+            'carouselBanners' => $carouselBanners,
+            'actionBanner' => $actionBanner
+        ]);
     }
 
     public function aboutUs(){

@@ -46,8 +46,9 @@ Route::namespace('Front')->group(function(){
 });
 
 Route::namespace('Auth')->group(function(){
+    Route::get('register','RegisterController@register')->name('register');
     Route::get('login','LoginController@showLoginForm')->name('login');
-    Route::post('logout', 'LoginController@logout')->name('logout');
+    Route::get('logout', 'LoginController@logout')->name('logout');
     Route::post('login','LoginController@login')->name('processLogin');
 });
 

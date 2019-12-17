@@ -1221,3 +1221,13 @@ footer p {
  .ml-10{
    margin-left: 10px;
  }
+
+.login-form-wrapper {
+
+}
+
+.login-form-wrapper .container {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 80px;
+}

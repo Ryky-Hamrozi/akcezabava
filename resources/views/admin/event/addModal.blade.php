@@ -28,7 +28,7 @@
                 <div class="inputs flx-w row">
                     <div class="box-input w100">
                         <label for="description">Popis akce</label>
-                        <textarea id="description" name="description">{{$item->description ?? ''}}</textarea>
+                        <textarea id="description" class="mytextarea" name="description">{{$item->description ?? ''}}</textarea>
                     </div>
                 </div>
 
@@ -205,5 +205,7 @@
 
         timePickerOptions.defaultTime = timeEnd;
         $('#time-end').timepicker(timePickerOptions);
+
+
     });
 </script>

@@ -8,12 +8,19 @@ class Banner extends Model
 {
     protected $guarded = ['id'];
 
-    public const locations = [
-        1 => 'Nahoře',
-        2 => 'Vlevo',
-        3 => 'Vpravo',
-        4 => 'Karusel',
-        5 => 'Akce',
+    const
+        POSITION_UP = 1,
+        POSITION_LEFT = 2,
+        POSITION_RIGHT = 3,
+        POSITION_CAROUSEL = 4,
+        POSITION_ACTION = 5;
+
+    const locations = [
+        self::POSITION_UP => 'Nahoře',
+        self::POSITION_LEFT => 'Vlevo',
+        self::POSITION_RIGHT => 'Vpravo',
+        self::POSITION_CAROUSEL => 'Karusel',
+        self::POSITION_ACTION => 'Akce',
     ];
 
     public function event(){
@@ -23,6 +30,13 @@ class Banner extends Model
     public function image()
     {
         return $this->morphOne('App\Model\Image','imageable');
+    }
+
+    public function getImagePath() {
+        $image = $this->image()->first();
+        if($image) {
+            return $image->path;
+        }
     }
 
 }

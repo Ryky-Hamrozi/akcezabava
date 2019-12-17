@@ -79,13 +79,14 @@ class Event extends Model
         return $this->morphMany('App\Model\Image','imageable');
     }
 
+    public function banner() {
+        return $this->belongsTo('App\Model\Banner');
+    }
+
     public function getMainImage(){
         $img = $this->images()->first();      
         if($img){
             return $img->path;
-        }
-        else{
-            return "nic";
         }
     }
 
@@ -218,14 +219,22 @@ class Event extends Model
         foreach($deletedImagesIds as $id){
             $image = Image::find($id)->delete();
         }
-        if($request->images){           
+        if($request->images){
+            $i = 1;
             foreach($request->file('images') as $img){                
                 if($img){                 
                     $image = new Image();
                     $image->uploadImage($img,$event);
+                    //// Smaze obrazky pokud jich je vic..
+                    ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_LIST, $event->id . "-" . $i, true);
                 }
+
+                $i++;
             }
         }
+
+        /// Smaze hlavni obrazek
+        ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_LIST, $event->id);
     }
 
     private function processContact($request){

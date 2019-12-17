@@ -1,4 +1,9 @@
 $(document).ready(function(){
+    console.log("aaaaa");
+    $('body').on('shown.bs.modal','#new-action-modal', function () {
+        console.log("shown!");
+        //tinyMCE.editors=[];
+    });
 
     $('.addAction').on('click',function(event){
         getModalContent($(this));
@@ -46,7 +51,7 @@ $(document).ready(function(){
             url: "/admin/getModalContent",
             data: { model:model, id:id, _token: token  },
             success : function(data){
-                console.log(data.modal);
+                //console.log(data.modal);
                 $('#new-action-modal').replaceWith(data.modal);
 
                 button.parent().parent("tr").addClass("active");
@@ -61,9 +66,14 @@ $(document).ready(function(){
                 $("#new-action-modal").css("display", "flex").animate({opacity: 1}, 300);
                 $(".overlay").fadeIn(300);
 
+                tinymce.init({
+                    selector: '.mytextarea'
+                });
+
             }
         })
     }
+
     /* nastaví modalové okno pro smazání modelu */
     function setRemoveModal(button){
         var remove = $("#remove");

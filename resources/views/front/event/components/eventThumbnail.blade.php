@@ -1,7 +1,18 @@
 <article class="p15 w33p">
         <a href="{{route('detail-event',['id' => $event->id])}}" class="article">
             <figure>
-                <div class="box" style='background-image:url("{{asset($event->getMainImage())}}")'></div>
+                <?php
+                $tempImagePath = "";
+                    if($event->getMainImage()) {
+                        $tempImagePath = \App\Model\ImageGenerator::generateImageAndGetUrlPath(
+                                \App\Model\ImageGenerator::CONF_EVENT_HOMEPAGE_LIST,
+                                $event->id,
+                                $event->getMainImage()
+                        );
+
+                    }
+                ?>
+                <div class="box" style='background-image:url("{{asset($tempImagePath)}}")'></div>
                 <figcaption>
                 <div class="tag" style="background: {{$event->category->backColor}}; color: {{$event->category->foreColor}}">{{$event->category->name}}</div>
                 <h2>{{$event->title}}</h2>

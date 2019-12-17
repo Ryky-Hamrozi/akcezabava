@@ -34,7 +34,7 @@ class Image extends Model
         $path = public_path().'/'.$modelName.'/'.$model->id;
         $fullPath = $path . '/' . $name;
         $thumbnailPath = $path. '/'. 'thumbnail_' . $name;
-        //dd($path);
+
         if(!File::exists($path)) File::makeDirectory($path, 777,true);
         $image = Img::make($photo);
         $image->save($fullPath);

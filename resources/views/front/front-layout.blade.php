@@ -37,6 +37,10 @@
 
     <link rel="canonical" href="#">
 
+    <link rel="icon" type="image/png" href="{{asset("img/favicon-32x32.png")}}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{asset("img/favicon-16x16.png")}}" sizes="16x16" />
+
+
 </head>
 <body>
 <!-- JSON LD START -->
@@ -72,8 +76,14 @@
     </script>
 <!-- JSON LD END -->
 <div class="background-fixed"> <!--  trida static  -->
+    <div class="banner-left banner-side" style="background-image: url({{asset($leftBannerPath)}}})"></div>
+    <div class="banner-right banner-side" style="background-image: url({{asset($rightBannerPath)}}})"></div>
+
     <a id="backgroundstatic" href="#"></a>
     <div class="ios-wrap">
+        @if($topBannerPath)
+            <div class="banner-top" style="background-image: url({{asset($topBannerPath)}})"></div>
+        @endif
         <div class="container">
             <header class="flx sb-c">
                 <a class="logo" href="/"><img src="{{asset('img/front/logo.png')}}" alt="Logo"></a>

@@ -161,7 +161,7 @@ body.fixed {
 }
 
 .background-fixed {
-  background-image: url("https://www.olomouc.cz/images/body/1558688655_KJ5x6fBprk.jpg");
+  /* background-image: url("https://www.olomouc.cz/images/body/1558688655_KJ5x6fBprk.jpg"); */
   background-position: 50% 0;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -499,7 +499,7 @@ label.error:before {
   display: inline-block;
   width: 40px;
   height: 40px;
-  background: #d71921 url("img/arrowtop.svg") no-repeat center center;
+  background: #d71921 url("/img/front/arrowtop.svg") no-repeat center center;
 }
 
 .scrollToTop span {
@@ -744,10 +744,10 @@ header .button, header .menu-btn {
   text-align: center;
 }
 .arrows .slick-prev::before {
-  background: url("img/arrow-left.svg") no-repeat center;
+  background: url("/img/front/arrow-left.svg") no-repeat center;
 }
 .arrows .slick-next::before {
-  background: url("img/arrow-right.svg") no-repeat center;
+  background: url("/img/front/arrow-right.svg") no-repeat center;
 }
 .arrows .slick-prev:hover, .arrows .slick-next:hover {
   background:rgba(0, 0, 0, 0.1);
@@ -1545,4 +1545,26 @@ footer p {
 
 .new-action-page .center-button {
   margin-top: 50px;
+}
+
+.banner-side {
+  position: absolute;
+  top: 0;
+  display: block;
+  width: 418px;
+  height: 980px;
+  position: fixed;
+}
+
+.banner-left {
+
+  left: 0;
+}
+
+.banner-right {right: 0;}
+
+.banner-top {
+  height: 200px;
+  width: 100%;
+  display: block;
 }
