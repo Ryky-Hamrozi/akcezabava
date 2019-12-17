@@ -1,0 +1,565 @@
+@media (max-width: 1023px) {
+  .overflowhidden, body.fixed {
+    padding-right: 0;
+  }
+
+  .interested-actions, footer h3 {
+    margin-bottom: 30px;
+  }
+
+  footer {
+    padding-top: 30px;
+  }
+
+  footer .socials {
+    padding-top: 60px;
+  }
+
+  .main-section h1, .recomended-for-u {
+    margin-top: 30px;
+  }
+
+  .copyright {
+    margin-top: 20px;
+  }
+
+  .full-search {
+    padding: 30px 15px 0 15px;
+  }
+
+  .copyright a {
+    margin-right: 30px;
+  }
+
+  .films .w25p {
+    width: 33.333%;
+  }
+
+  .box-input.w16p {
+    width: 33.333%;
+  }
+
+  .detail-page-kino .kino-description {
+    padding-left: 30px;
+  }
+
+  .detail-page-kino h1 {
+    margin-bottom: 20px;
+  }
+
+  .detail-page-kino .dsc {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  .detail-page-kino .button {
+    margin-right: 15px;
+  }
+
+  .tablekino th, .tablekino td {
+    padding: 8px;
+  }
+
+  .how-its-going .w50p {
+    margin: 0;
+  }
+
+  input, select, textarea {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    transform-origin: top left !important;
+    box-shadow: unset !important;
+    background: transparent;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  input:focus, textarea:focus {
+  	font-size: 16px !important;
+  }
+
+  /* disable auto-zoom on iphone input field focus */
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+  	select:focus, textarea:focus, input:focus {
+  		font-size: 16px !important;
+  	}
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  article.w33p {
+    width: 50%;
+  }
+
+  footer > div {
+    width: 50%;
+  }
+
+  header .button {
+    padding: 0 15px;
+  }
+
+  header .button {
+    margin-left: 15px;
+  }
+
+  header .menu-btn {
+    margin-left: 15px;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: normal;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  header .menu-btn img {
+    min-height: 25px;
+    margin-right: 0;
+  }
+
+  .logo {
+    width: 150px;
+  }
+
+  .full-search form {
+    flex-wrap: wrap;
+  }
+
+  .full-search .calcw {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .full-search select, .datepicker-box {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .full-search form button {
+    width: 50%;
+  }
+
+  .full-search .hledat {
+    margin-left: 0;
+  }
+
+  header {
+    padding: 15px;
+  }
+
+  .recomended-for-u, .interested-actions {
+    padding: 0;
+  }
+
+  .tab-menu li a {
+    margin: 0 4px;
+    font-size: 14px;
+  }
+
+  .article {
+    padding-bottom: 10px;
+  }
+
+  .article.big {
+    padding-bottom: 0;
+  }
+
+  footer {
+    padding: 30px 15px 0 15px;
+  }
+
+  .arrows .slick-prev {
+    left: 0;
+  }
+  .arrows .slick-next {
+    right: 0;
+  }
+
+  .main-section {
+    padding: 0 15px 30px 15px;
+  }
+
+  .detail-page .center {
+    margin-bottom: 30px;
+  }
+
+  .detail-page .maindsc, .detail-page .nahled {
+    margin-bottom: 20px;
+  }
+
+  .detail-page .left-side {
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .detail-page .right-side {
+    width: 100%;
+    text-align: center;
+  }
+
+  .detail-page {
+    padding: 30px 15px;
+  }
+
+  .description {
+    margin-top: 20px;
+  }
+
+  .breadcrumb {
+    padding: 0 15px;
+  }
+
+  .detail-page h1 {
+    font-size: 40px;
+  }
+
+  .detail-page .button.share {
+    margin: auto;
+    display: block;
+    width: 216px;
+  }
+
+  .similar-actions {
+    margin: 30px 0;
+    padding: 0;
+  }
+
+  .reklama {
+    margin-bottom: 0;
+  }
+
+  .films .w25p {
+    width: 50%;
+  }
+
+  .all-films {
+    margin: 30px 0;
+    padding: 0;
+  }
+
+  .box-input {
+    width: 100% !important;
+  }
+
+  .facebook-part {
+    margin-bottom: 30px;
+  }
+
+  .facebook-part .left-side {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .new-action-page h2 {
+    margin-bottom: 0;
+  }
+
+  .new-action-page .buttons {
+    margin-top: 30px;
+  }
+
+  .new-action-page {
+    padding: 30px 0;
+  }
+
+  .box-input input[type="file"] ~ label {
+    line-height: 25px;
+  }
+
+  .box-input input[type="file"] ~ label, .box-input textarea {
+    height: 150px;
+  }
+
+  .about-us .dsc {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .about-us .map, .info-map .socials {
+    margin-top: 30px;
+  }
+
+  .info-map .contact {
+    margin-top: 20px;
+  }
+
+  .info-map h2 {
+    margin-bottom: 20px;
+  }
+
+  .info-map {
+    position: static;
+    margin-bottom: 30px;
+    padding: 30px;
+    margin-top: 0;
+  }
+
+  .about-us .map {
+    height: auto;
+  }
+
+  .about-us .map iframe {
+    height: 250px;
+  }
+
+  .detail-page-kino .kino-description {
+    padding-left: 0;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .overflow-table {
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  .detail-page-kino {
+    padding: 30px 0 15px 0;
+  }
+
+  .tablekino {
+    margin-top: 20px;
+  }
+
+  .tab-menu {
+    margin-top: 10px;
+  }
+
+  .detail-page-kino .image {
+    width: 100%;
+  }
+
+  .detail-page-kino .image img {
+    max-height: 100px;
+  }
+
+  .detail-page-kino h1 {
+    font-size: 35px;
+  }
+
+  .film {
+    text-align: center;
+  }
+
+  .how-its-going .w50p {
+    width: 100%;
+  }
+
+  .how-its-going h2 {
+    margin: 30px 0;
+  }
+
+  .success {
+    padding: 30px 0 20px 0;
+  }
+
+  .success .button {
+    margin-top: 20px;
+  }
+
+  .success img {
+    max-height: 100px;
+  }
+
+}
+
+@media (max-width: 540px) {
+
+  footer > div {
+    width: 100%;
+  }
+
+  article.w33p {
+    width: 100%;
+  }
+
+  .article, .article h2 {
+    height: auto;
+  }
+
+  .reklama-prc .article {
+    height: 200px;
+  }
+
+  header .menu-btn {
+    font-size: 0;
+    justify-content: center;
+  }
+
+  .article.big figure {
+    flex-direction: column-reverse;
+  }
+
+  .article.big figcaption {
+    width: 100%;
+  }
+
+  .article.big .box {
+    width: 100%;
+    height: 175px;
+  }
+
+  .article.big, .article.big h2 {
+    height: auto;
+  }
+
+  .tab-menu {
+    flex-wrap: wrap;
+  }
+
+  footer {
+    padding-top: 10px;
+    text-align: center;
+  }
+
+  footer .socials {
+    padding-top: 30px;
+  }
+
+  footer h3 {
+    margin: 20px 0;
+  }
+
+  .main-section h1, .main-section p {
+    margin-top: 20px;
+  }
+
+  .full-search {
+    padding: 20px 0 0 0;
+  }
+
+  .full-search select, .datepicker-box input, .full-search form button {
+    height: 50px;
+  }
+
+  .full-search select {
+    line-height: 48px;
+  }
+
+  footer ul li a {
+    line-height: 30px;
+  }
+
+  .detail-page h1 {
+    font-size: 32px;
+  }
+
+  .breadcrumb a {
+    margin-right: 10px;
+  }
+
+  .breadcrumb li:last-child a {
+    margin-right: 0;
+  }
+
+  .detail-page .maindsc li {
+    width: 100%;
+    margin: 0;
+  }
+
+  .detail-page .maindsc li img {
+    margin-right: 5px;
+  }
+
+  .all-films {
+    text-align: center;
+  }
+
+  .film {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dadada;
+  }
+
+  .film .box {
+    height: auto;
+    line-height: normal;
+  }
+
+  .films .w25p {
+    width: 100%;
+  }
+
+  .film h2 {
+    text-overflow: inherit;
+    white-space: normal;
+    margin-bottom: 0;
+  }
+
+  .w16p, .w25p, .w30p, .w33p, .w35p, .w40p, .w50p, .w60p, .w65p, .w70p {
+    margin-top: 20px;
+  }
+
+  .new-action-page h1, .new-action-page h2 {
+    font-size: 32px;
+  }
+
+  .tablekino th, .tablekino td {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .detail-page-kino {
+    text-align: center;
+  }
+
+  .detail-page-kino h1 {
+    font-size: 30px;
+  }
+
+  .detail-page-kino .button {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 20px;
+  }
+
+  .detail-page-kino .button.share span {
+    float: right;
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  header .button {
+    font-size: 0;
+  }
+
+  header .button::before {
+    content: "+";
+    font-size: 20px;
+  }
+
+  .main-section h1 {
+    font-size: 32px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .new-action-page h1, .new-action-page h2 {
+    font-size: 26px;
+  }
+
+  .new-action-page .buttons {
+    flex-direction: column;
+  }
+
+  .new-action-page .buttons .button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .new-action-page .buttons .button.back {
+    margin-top: 20px;
+  }
+
+}
