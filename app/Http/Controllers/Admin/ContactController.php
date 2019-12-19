@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminBaseController;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use Illuminate\Http\Request;
 use App\Model\Contact;
 
-class ContactController extends AdminController
+class ContactController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.

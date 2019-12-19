@@ -19,6 +19,8 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
     Route::resource('category', 'CategoryController');
     Route::resource('contact', 'ContactController');
     Route::resource('banner', 'BannerController');
+    Route::resource('import', 'ImportController');
+    Route::get('testCurl', 'ImportController@testCurl');
     Route::get('event','EventController@index')->name('event.index');
     Route::post('event','EventController@store')->name('event.store');
     Route::put('event/{event}','EventController@update')->name('event.update');
@@ -39,10 +41,16 @@ Route::namespace('Front')->group(function(){
     Route::get('/jak-to-funguje','FrontController@howItWorks')->name('how-it-works');
     Route::get('/reklama-na-webu','FrontController@advertising')->name('advertising');
     Route::post('/zpracuj-reklamu','FrontController@processAdvertising')->name('process-advertising');
+    Route::get('/reklama-odeslano','FrontController@successAdvertising')->name('success-message');
     Route::get('/nova-udalost','EventController@create')->name('new-event');
     Route::post('/zpracuj-udalost','EventController@store')->name('process-event');
     Route::get('/uspesne-odeslano','EventController@success')->name('success-event');
     Route::get('/detail-akce/{event}','EventController@detail')->name('detail-event');
+    Route::get('/seznam-akci/','EventController@eventList')->name('list-event');
+    Route::get('/akce-a-zabava','FrontController@akceAZabava')->name('akce-a-zabava');
+
+    Route::get('/get-homepage-event-list','AjaxController@getHomepageEventList');
+    Route::get('/get-filter-event-list','AjaxController@getFilterEventList');
 });
 
 Route::namespace('Auth')->group(function(){

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
@@ -48,13 +49,29 @@ class Image extends Model
 
     public static function boot()
     {
+        $Filesystem = new \Illuminate\Filesystem\Filesystem();
+
         parent::boot();
-        self::deleting(function(Image $image)
+        self::deleting(function(Image $image) use ($Filesystem)
         {
             $path = public_path() . '/' . $image->path;
             $thumbPath = public_path() . '/' . $image->thumbnail;
+
+            //// Nadslozka slozky s obrazkem
+	        $folders = explode('/', $path);
+            unset($folders[count($folders) - 1]);
+
+            //// Slozka obsahujici obrazky
+            $imagesFolderPath = implode('/', $folders);
+
             File::delete($path);
             File::delete($thumbPath);
+
+	        /// Kontrola jestli je slozka prazdna neobsahuje zadne soubory tak by mela byt smazana
+	        $files = $Filesystem->files($imagesFolderPath);
+            if(empty($files)) {
+				$Filesystem->deleteDirectory($imagesFolderPath);
+            }
         });
     }
 }

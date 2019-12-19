@@ -9,8 +9,9 @@ class ImageGenerator {
 
 	const
 		CONF_EVENT_HOMEPAGE_LIST = "homepage_event_list",
+		CONF_EVENT_DETAIL = "event_detail",
+		CONF_EVENT_HOMEPAGE_CAROUSEL = "homepage_event_carousel",
 
-		CONF_BANNER_HOMEPAGE_CAROUSEL = "homepage_banner_carousel",
 		CONF_BANNER_HOMEPAGE_ACTION = "homepage_banner_action_list",
 		CONF_BANNER_SIDE  = "front_banner_side",
 		CONF_BANNER_TOP = "front_banner_top";
@@ -27,8 +28,8 @@ class ImageGenerator {
 		METHOD_TRIM = "trim";
 
 	static $conf = [
-		self::CONF_BANNER_HOMEPAGE_CAROUSEL => [
-			self::THUMBNAIL_PREFIX => self::CONF_BANNER_HOMEPAGE_CAROUSEL,
+		self::CONF_EVENT_HOMEPAGE_CAROUSEL => [
+			self::THUMBNAIL_PREFIX => self::CONF_EVENT_HOMEPAGE_CAROUSEL,
 			self::WIDTH => 720,
 			self::HEIGHT => 420,
 			self::METHOD => self::METHOD_FIT,
@@ -43,6 +44,12 @@ class ImageGenerator {
 			self::THUMBNAIL_PREFIX => self::CONF_EVENT_HOMEPAGE_LIST,
 			self::WIDTH => 460,
 			self::HEIGHT => 180,
+			self::METHOD => self::METHOD_FIT,
+		],
+		self::CONF_EVENT_DETAIL => [
+			self::THUMBNAIL_PREFIX => self::CONF_EVENT_DETAIL,
+			self::WIDTH => 680,
+			self::HEIGHT => 244,
 			self::METHOD => self::METHOD_FIT,
 		],
 		self::CONF_BANNER_SIDE => [

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminBaseController;
 use App\Http\Requests\StoreDistrictRequest;
 use App\Http\Requests\UpdateDistrictRequest;
 use Illuminate\Http\Request;
 use App\Model\District;
 
-class DistrictController extends AdminController
+class DistrictController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.

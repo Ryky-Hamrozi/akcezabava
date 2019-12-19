@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminBaseController;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Model\Image;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Model\Event;
 use Illuminate\Support\Facades\Auth;
 
-class EventController extends AdminController
+class EventController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.

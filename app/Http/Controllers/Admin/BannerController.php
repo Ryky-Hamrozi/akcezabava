@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminBaseController;
 use App\Http\Requests\StoreBannerRequest;
 use App\Http\Requests\UpdateBannerRequest;
 use App\Model\ImageGenerator;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Model\Banner;
 use App\Model\Image;
 
-class BannerController extends AdminController
+class BannerController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +36,6 @@ class BannerController extends AdminController
         if($request->has('image')){
             $image = new Image();
             $image->uploadImage($request->file('image'),$banner);
-            ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_HOMEPAGE_CAROUSEL, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_HOMEPAGE_ACTION, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_SIDE, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_TOP, $banner->id);
@@ -50,7 +50,6 @@ class BannerController extends AdminController
             $banner->image->delete();
             $image = new Image();
             $image->uploadImage($request->file('image'),$banner);
-            ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_HOMEPAGE_CAROUSEL, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_HOMEPAGE_ACTION, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_SIDE, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_TOP, $banner->id);
@@ -64,6 +63,7 @@ class BannerController extends AdminController
         $data['name'] = $request->get('name');
         $data['location'] = $request->get('location');
         $data['event_id'] = $request->get('event') != 0 ? $request->get('event') : null;
+        $data['url'] = $request->get('url');
 
         return $data;
     }

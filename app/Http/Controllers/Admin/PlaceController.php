@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminBaseController;
 use App\Http\Requests\StorePlaceRequest;
 use App\Http\Requests\UpdatePlaceRequest;
 use Illuminate\Http\Request;
 use App\Model\Place;
 
-class PlaceController extends AdminController
+class PlaceController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.

@@ -40,6 +40,10 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="box-input w50">
+                        <label for="url">Url</label>
+                        <input id="url" name="url" type="text"  value="{{$item->url ?? ''}}">
+                    </div>
                 </div>
 
                 <div class="inputs flx-w row">

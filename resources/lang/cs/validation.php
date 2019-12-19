@@ -147,6 +147,8 @@ return [
     'attributes' => [
         'password' => 'Heslo',
         'name' => 'Pole název',
+        'email' => 'E-mail',
+        'person' => 'Jméno a příjmení',
         'description' => 'Pole popis',
         'date-start' => 'Pole datum začátku',
         'date-end' => 'Pole datum konce',

@@ -204,6 +204,10 @@ class Event extends Model
             $data['place_text'] = $request->get('user_place');
         }
 
+        if($request->has('fb_url')){
+            $data['fb_url'] = $request->get('fb_url');
+        }
+
         return $data;
 
     }
@@ -226,7 +230,7 @@ class Event extends Model
                     $image = new Image();
                     $image->uploadImage($img,$event);
                     //// Smaze obrazky pokud jich je vic..
-                    ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_LIST, $event->id . "-" . $i, true);
+//                    ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_LIST, $event->id . "-" . $i, true);
                 }
 
                 $i++;
@@ -234,7 +238,9 @@ class Event extends Model
         }
 
         /// Smaze hlavni obrazek
+        ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_CAROUSEL, $event->id);
         ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_LIST, $event->id);
+        ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_DETAIL, $event->id);
     }
 
     private function processContact($request){

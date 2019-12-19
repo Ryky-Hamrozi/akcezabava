@@ -125,6 +125,13 @@
                     </div>
                 </div>
 
+                    <div class="inputs flx-w row">
+                        <div class="box-input w100">
+                            <label for="url">Facebook url</label>
+                            <input id="url" name="fb_url" type="text"  value="{{$item->fb_url ?? ''}}">
+                        </div>
+                    </div>
+
                 @if(isset($item) && $item->images->count())
                     <div class="row">
                         <div class="images-wrapper">

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AdminBaseController;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use App\Model\Category;
 
-class CategoryController extends AdminController
+class CategoryController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.

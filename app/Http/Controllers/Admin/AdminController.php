@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminBaseController;
 use App\Model\Category;
 use App\Model\District;
 use App\Model\Event;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class AdminController extends AdminBaseController
 {
     protected $groupActions;
 

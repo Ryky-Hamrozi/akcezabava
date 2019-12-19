@@ -10,7 +10,6 @@ class StoreEventRequest extends BaseRequest
      */
     public function rules()
     {
-
         $today = date('d.m.Y');
         return [
             'name' => 'required',

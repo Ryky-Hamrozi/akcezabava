@@ -1,7 +1,13 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: stanislav.cech
- * Date: 9/13/2019
- * Time: 9:40 AM
- */
+@extends('front.front-layout')
+
+@section('title', 'Nová událost')
+
+@section('content')
+
+    @include('front.event.components.eventSearchForm',['districts' => $districts, 'allCategories' => $allCategories])
+    @include('front.spinner')
+    <div class="js-content-block-events">
+        @include('front.event.components.eventSearchFormListResult',['events' => $events])
+    </div>
+
+@endsection

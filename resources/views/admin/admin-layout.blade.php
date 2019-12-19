@@ -72,6 +72,8 @@
                 </li>
                 <li class="{{Request::is('admin/place') ? 'active' : ''}}"><a href="/admin/place">MÍSTA</a></li>
                 <li class="{{Request::is('admin/banner') ? 'active' : ''}}"><a href="/admin/banner">BANNERY</a></li>
+
+                <li class="{{Request::is('admin/import') ? 'active' : ''}}"><a href="/admin/import">Import akci</a></li>
                 {{--<li><a href="">UŽIVATELÉ</a></li>--}}
             </ul>
         </nav>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-class AjaxController extends AdminController
+use App\Http\Controllers\AdminBaseController;
+
+class AjaxController extends AdminBaseController
 {
 
     public function getModalContent(){

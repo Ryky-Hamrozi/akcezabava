@@ -23,6 +23,8 @@
     <script src="{{asset('js/admin/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/admin/select2.full.min.js')}}"></script> 
     <script src="{{asset('js/front/web.js')}}"></script>
+
+    <script src="{{asset('js/front/functionality.js')}}"></script>
  
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
@@ -76,19 +78,19 @@
     </script>
 <!-- JSON LD END -->
 <div class="background-fixed"> <!--  trida static  -->
-    <div class="banner-left banner-side" style="background-image: url({{asset($leftBannerPath)}}})"></div>
-    <div class="banner-right banner-side" style="background-image: url({{asset($rightBannerPath)}}})"></div>
+    @if($leftBannerPath && isset($leftBanner))<a class="banner-left banner-side" @if($leftBanner->url)href="{{$leftBanner->url}}" target="_blank"@endif style="background-image: url({{asset($leftBannerPath)}}})"></a>@endif
+    @if($rightBannerPath && isset($rightBanner))<a class="banner-right banner-side" @if($rightBanner->url)href="{{$rightBanner->url}}" target="_blank"@endif style="background-image: url({{asset($rightBannerPath)}}})"></a>@endif
 
-    <a id="backgroundstatic" href="#"></a>
+    {{--<a id="backgroundstatic" href="#"></a>--}}
     <div class="ios-wrap">
         @if($topBannerPath)
-            <div class="banner-top" style="background-image: url({{asset($topBannerPath)}})"></div>
+            <a class="banner-top" @if($topBanner->url)href="{{$topBanner->url}}" target="_blank"@endif style="background-image: url({{asset($topBannerPath)}})"></a>
         @endif
         <div class="container">
             <header class="flx sb-c">
                 <a class="logo" href="/"><img src="{{asset('img/front/logo.png')}}" alt="Logo"></a>
                 <div class="right-side flx-c">
-                    <a class="menu-btn" href="" title="AKCE A ZÁBAVA"><img src="{{asset('img/front/hipe.svg')}}" alt="AKCE A ZÁBAVA">AKCE A ZÁBAVA</a>
+                    <a class="menu-btn" href="{{route('akce-a-zabava')}}" title="AKCE A ZÁBAVA"><img src="{{asset('img/front/hipe.svg')}}" alt="AKCE A ZÁBAVA">AKCE A ZÁBAVA</a>
                    {{-- <a class="menu-btn" href="" title="KINA V OKOLÍ"><img src="{{asset('img/front/camera.svg')}}" alt="KINA V OKOLÍ">KINA V OKOLÍ</a> --}}
                     <a class="button" href="{{route('new-event')}}">Vložit událost</a>
                 </div>
@@ -110,7 +112,7 @@
                         <li><a href="{{route('about-us')}}">O nás</a></li>
                         <li><a href="{{route('advertising')}}">Obchodní formulář</a></li>
                         <li><a href="{{route('how-it-works')}}">Jak to funguje</a></li>
-                        <li><a href="">Vložit akci</a></li>
+                        <li><a href="{{route('new-event')}}">Vložit akci</a></li>
                     </ul>
                 </div>
                 <div>
