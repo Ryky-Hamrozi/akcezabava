@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Banner;
+use App\Model\Event;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -17,7 +18,14 @@ class AdminBaseController extends Controller
     protected $itemsPerPage;
 
     public function __construct(){
-        $this->itemsPerPage = 2;
+        $this->itemsPerPage = 6;
+
+        $events = Event::all()->where('approved', '=', 0);
+
+        View::share([
+            'eventsDissaproved' => $events->count()
+        ]);
+
     }
 
 }

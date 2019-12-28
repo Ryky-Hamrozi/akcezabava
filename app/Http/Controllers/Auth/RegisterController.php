@@ -71,12 +71,12 @@ class RegisterController extends AdminBaseController
         ]);
     }
 
-    /*public function register(Request $request) {
+    public function register(Request $request) {
         $this->create([
             "email" => $request->input("name"),
             "name" => $request->input("name"),
             "password" => $request->input("password")
         ]);
 
-    }*/
+    }
 }

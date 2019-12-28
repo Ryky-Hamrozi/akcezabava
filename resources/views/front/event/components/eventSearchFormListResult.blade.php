@@ -8,13 +8,7 @@
     <div class="flx-w row">
         @include('front.event.components.eventList',['events' => $events])
     </div>
-    <div class="strankovani">
-        <ul class="pagination">
-            <li class="active"><a href="" data-jzz-gui-player="true">16</a></li>
-            <li><a href="" data-jzz-gui-player="true">32</a></li>
-            <li><a href="" data-jzz-gui-player="true">48</a></li>
-            <li><a href="" data-jzz-gui-player="true">64</a></li>
-        </ul>
-        <a class="button" title="načíst další akce" href="{{route('list-event')}}" data-jzz-gui-player="true">načíst další akce</a>
-    </div>
+
+    @include('front.event.components.pagination',['items'=> $events])
+
 </section>

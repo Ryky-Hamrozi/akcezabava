@@ -1,5 +1,7 @@
 /node_modules
 /public/hot
+/public/event/*
+/public/banner
 /public/temp
 /public/storage
 /storage/*.key

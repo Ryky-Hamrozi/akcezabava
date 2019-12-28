@@ -57,7 +57,7 @@
                     <a href="/admin/event">AKCE</a>
                     <ul class="submenu">
                         <li class="{{Request::is('admin/event') ? 'active' : ''}}"><a href="/admin/event">Všechny</a></li>
-                        <li class="{{Request::is('admin/event/for-approval') ? 'active' : ''}}"><a href="/admin/event/for-approval">Ke schválení <span>25</span></a></li>
+                        <li class="{{Request::is('admin/event/for-approval') ? 'active' : ''}}"><a href="/admin/event/for-approval">Ke schválení <span>{{$eventsDissaproved}}</span></a></li>
                         <li class="{{Request::is('admin/event/finished') ? 'active' : ''}}"><a href="/admin/event/finished">Ukončené</a></li>
                         <li class="{{Request::is('admin/event/upcoming') ? 'active' : ''}}"><a href="/admin/event/upcoming">Připravované</a></li>
                     </ul>
@@ -87,7 +87,7 @@
                 </form>
                 <div class="right-content flx-c">
                     <a class="user flx-c">
-                        <span class="name"><strong>Michal Orsava</strong>systém administrátor</span><img src="{{asset('img/admin/user.svg')}}" alt="User">
+                        <span class="name"><strong>admin@leksys.cz</strong>systém administrátor</span><img src="{{asset('img/admin/user.svg')}}" alt="User">
                     </a>
                     <div class="spinner-master">
                         <input type="checkbox" id="spinner-form" />

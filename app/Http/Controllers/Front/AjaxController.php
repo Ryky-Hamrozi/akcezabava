@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\FrontBaseController;
+use App\Model\Banner;
 use App\Model\Category;
 use App\Model\District;
 use App\Model\Event;
@@ -14,8 +15,13 @@ class AjaxController extends FrontBaseController {
 
 		$eventList = $this->getEventsByRequest($request)['eventList'];
 
+		$actionBanner = Banner::all()->where('location', '=', Banner::POSITION_EVENT_LIST);
+
 		return response()->json([
-			'events' => view('front.event.components.eventList',['events' => $eventList->get()])->render()
+			'events' => view('front.event.components.eventList',[
+				'events' => $eventList,
+				'actionBanner' => $actionBanner
+			])->render()
 		]);
 	}
 
@@ -28,12 +34,15 @@ class AjaxController extends FrontBaseController {
 
 		$date = $data['date'];
 
+		$actionBanner = Banner::all()->where('location', '=', Banner::POSITION_EVENT_LIST);
+
 		return response()->json([
 			'events' => view('front.event.components.eventSearchFormListResult',[
-				'events' => $eventList->get(),
+				'events' => $eventList,
 				'selectedDistrict' => $selectedDistrict,
 				'selectedDate' => $date,
-				'selectedCategory' => $selectedCategory
+				'selectedCategory' => $selectedCategory,
+				'actionBanner' => $actionBanner
 			])->render(),
 		]);
 	}
@@ -56,12 +65,17 @@ class AjaxController extends FrontBaseController {
 		if($date) {
 			$eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
 		} else {
-			$eventList
-				->whereDate('date_from', '>=', date('Y-m-d'))
-				->whereDate('date_to', '>=', date('Y-m-d'));
+//			$eventList
+//				->whereDate('date_from', '>=', date('Y-m-d'))
+//				->whereDate('date_to', '>=', date('Y-m-d'));
 		}
 
 		$eventList->orderBy('date_from');
+
+		$eventList = $eventList->paginate($this->itemsPerPage);
+		//$eventList->appends([$request]);
+		$eventList->withPath('?' . $request->getQueryString());
+
 		$data['eventList'] = $eventList;
 		$data['districtId'] = $districtId;
 		$data['categoryId'] = $categoryId;

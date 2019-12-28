@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -36,7 +37,7 @@ class Image extends Model
         $fullPath = $path . '/' . $name;
         $thumbnailPath = $path. '/'. 'thumbnail_' . $name;
 
-        if(!File::exists($path)) File::makeDirectory($path, 777,true);
+        if(!File::exists($path)) mkdir($path, 0777, true);
         $image = Img::make($photo);
         $image->save($fullPath);
         $image->resize(150, null, function ($constraint) {

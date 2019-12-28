@@ -1,6 +1,6 @@
 @extends('front.front-layout')
 
-@section('title', 'Úvod')
+@section('title', 'Reklama na webu')
 
 @section('content')
     @include('front.spinner', ['class' => 'center'])

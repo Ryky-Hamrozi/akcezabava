@@ -204,6 +204,10 @@ class Event extends Model
             $data['place_text'] = $request->get('user_place');
         }
 
+        if($request->has('place_id')){
+            $data['place_id'] = $request->get('place_id');
+        }
+
         if($request->has('fb_url')){
             $data['fb_url'] = $request->get('fb_url');
         }

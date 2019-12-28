@@ -13,14 +13,16 @@ class Banner extends Model
         POSITION_LEFT = 2,
         POSITION_RIGHT = 3,
         POSITION_CAROUSEL = 4,
-        POSITION_ACTION = 5;
+        POSITION_EVENT_LIST = 5,
+        POSITION_EVENT_DETAIL = 6;
 
     const locations = [
         self::POSITION_UP => 'Nahoře',
         self::POSITION_LEFT => 'Vlevo',
         self::POSITION_RIGHT => 'Vpravo',
-        self::POSITION_CAROUSEL => 'Karusel',
-        self::POSITION_ACTION => 'Akce',
+        self::POSITION_CAROUSEL => 'Hlavní stránka - Carousel',
+        self::POSITION_EVENT_LIST => 'Akce - seznam',
+        self::POSITION_EVENT_DETAIL => 'Akce - detail',
     ];
 
     public function event(){

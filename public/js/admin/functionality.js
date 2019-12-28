@@ -195,4 +195,19 @@ $(document).ready(function(){
             },
         });
     }
+
+    $('body').on('click', '.ajax-import', function() {
+        $link = $(this);
+        $link.find('.loader').show();
+        $link.find('img').hide();
+        $.ajax({
+            url: $link.attr('href')
+        }).done(function(data) {
+            $link = $('#'+data.id);
+            $link.find('img').attr('src', '/img/admin/checked_green.svg').show();
+            $link.find('.loader').hide();
+        });
+
+        return false;
+    });
 });

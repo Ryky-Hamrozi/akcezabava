@@ -17,7 +17,7 @@ class FrontBaseController extends Controller
 	protected $itemsPerPage;
 
 	public function __construct(){
-		$this->itemsPerPage = 2;
+		$this->itemsPerPage = 10;
 
 		$leftBanner = Banner::where('location', '=', Banner::POSITION_LEFT)->first();
 		$rightBanner = Banner::where('location', '=', Banner::POSITION_RIGHT)->first();

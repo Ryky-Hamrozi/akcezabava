@@ -20,7 +20,10 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
     Route::resource('contact', 'ContactController');
     Route::resource('banner', 'BannerController');
     Route::resource('import', 'ImportController');
+    Route::get('import-events', 'ImportController@import');
+    Route::get('import-delete', 'ImportController@delete');
     Route::get('testCurl', 'ImportController@testCurl');
+    Route::get('curlEvents', 'ImportController@curlEvents');
     Route::get('event','EventController@index')->name('event.index');
     Route::post('event','EventController@store')->name('event.store');
     Route::put('event/{event}','EventController@update')->name('event.update');
@@ -58,5 +61,6 @@ Route::namespace('Auth')->group(function(){
     Route::get('login','LoginController@showLoginForm')->name('login');
     Route::get('logout', 'LoginController@logout')->name('logout');
     Route::post('login','LoginController@login')->name('processLogin');
+    Route::get('admin','LoginController@showLoginForm');
 });
 

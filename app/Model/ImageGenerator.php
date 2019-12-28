@@ -12,6 +12,7 @@ class ImageGenerator {
 		CONF_EVENT_DETAIL = "event_detail",
 		CONF_EVENT_HOMEPAGE_CAROUSEL = "homepage_event_carousel",
 
+		CONF_BANNER_EVENT_DETAIL = "banner_event_detail",
 		CONF_BANNER_HOMEPAGE_ACTION = "homepage_banner_action_list",
 		CONF_BANNER_SIDE  = "front_banner_side",
 		CONF_BANNER_TOP = "front_banner_top";
@@ -64,6 +65,12 @@ class ImageGenerator {
 			self::HEIGHT => 200,
 			self::METHOD => self::METHOD_FIT
 		],
+		self::CONF_BANNER_EVENT_DETAIL => [
+			self::THUMBNAIL_PREFIX => self::CONF_BANNER_EVENT_DETAIL,
+			self::WIDTH => 310,
+			self::HEIGHT => 321,
+			self::METHOD => self::METHOD_FIT
+		]
 	];
 
 

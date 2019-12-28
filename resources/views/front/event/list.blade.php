@@ -7,7 +7,7 @@
     @include('front.event.components.eventSearchForm',['districts' => $districts, 'allCategories' => $allCategories])
     @include('front.spinner')
     <div class="js-content-block-events">
-        @include('front.event.components.eventSearchFormListResult',['events' => $events])
+        @include('front.event.components.eventSearchFormListResult',['events' => $events, 'paginate' => true])
     </div>
 
 @endsection

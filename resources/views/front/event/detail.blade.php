@@ -11,16 +11,16 @@
     </ul>
     <div class="detail-page flx-w">
         <div class="center">
+            @if($event->getMainImage())
             <?php
-            if ($event->getMainImage()) {
                 $tempImageDetailEvent = \App\Model\ImageGenerator::generateImageAndGetUrlPath(
                         \App\Model\ImageGenerator::CONF_EVENT_DETAIL,
                         $event->id,
                         $event->getMainImage()
                 );
-            }
             ?>
             <div class="nahled"><img src="{{asset($tempImageDetailEvent)}}" alt="nahled"></div>
+            @endif
             <h1>{{$event->title}}</h1>
 
             <div class="catch-the-image"></div>
@@ -88,7 +88,18 @@
         </div>
 
         <div class="right-side">
-            <a href="#" class="reklama"><img src="{{asset('img/front/reklama2.jpg')}}" alt="reklama"></a>
+            @if($eventBanner)
+                <?php
+                if($eventBanner->getImagePath()) {
+                    $tempBannerDetail = \App\Model\ImageGenerator::generateImageAndGetUrlPath(
+                            \App\Model\ImageGenerator::CONF_BANNER_EVENT_DETAIL,
+                            $eventBanner->id,
+                            $eventBanner->getImagePath()
+                    );
+                }
+                ?>
+                <a href="#" class="reklama"><img src="{{$tempBannerDetail}}" alt="reklama"></a>
+            @endif
         </div>
 
     </div>

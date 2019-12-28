@@ -33,27 +33,28 @@ class FrontController extends FrontBaseController
 
         if($categoryId){
             $events = Event::where('approved','=', 1)
-                        ->where('date_from','>=',date('Y-m-d'))
-                        ->where('date_to', '>=', date('Y-m-d'))
+//                        ->where('date_from','>=',date('Y-m-d'))
+//                        ->where('date_to', '>=', date('Y-m-d'))
                         ->where('category_id',(int)$categoryId)
-                        ->orderBy('date_from')->paginate(5);
+                        ->orderBy('date_from');
         }
         else{
             $events = Event::where('approved','=', 1)
-                        ->where('date_from','>=',date('Y-m-d'))
-                        ->where('date_to', '>=', date('Y-m-d'))
-                        ->orderBy('date_from')
-                        ->paginate(5);
+//                        ->where('date_from','>=',date('Y-m-d'))
+//                        ->where('date_to', '>=', date('Y-m-d'))
+                        ->orderBy('date_from');
         }
+
+        $events->paginate($this->itemsPerPage);
 
         $carouselBanners = Banner::all()->where('location','=', Banner::POSITION_CAROUSEL);
 
-        $actionBanner = Banner::all()->where('location', '=', Banner::POSITION_ACTION);
+        $actionBanner = Banner::all()->where('location', '=', Banner::POSITION_EVENT_LIST);
 
         return view('front.homepage',[
             'categories' => $categories,
             'allCategories' => $allCategories,
-            'events' => $events,
+            'events' => $events->get(),
             'districts' => $districts,
             'categoryId' => $categoryId,
             'carouselBanners' => $carouselBanners,
@@ -118,7 +119,9 @@ class FrontController extends FrontBaseController
 			'email' => $emailFrom,
 			'dsc' => $dsc
 		], function ($m) use ($emailFrom, $name, $file) {
-			$m->from($emailFrom, $name);
+//			$m->from($emailFrom, $name);
+            $m->replyTo($emailFrom);
+            $m->to("risakczexx@gmail.com");
 			$m->subject("Zpráva z Reklamy na webu");
 			if($file) {
 				/** @var UploadedFile $file */

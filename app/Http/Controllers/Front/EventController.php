@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\FrontBaseController;
+use App\Model\Banner;
 use App\Model\Category;
 use App\Model\District;
 use App\Model\Event;
+use App\Model\Place;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,8 +62,22 @@ class EventController extends FrontBaseController
             }
         }
 
+        if(!$place = Place::where('name', '=', $request['user_place'])->first()) {
+            $place = new Place();
+
+            $place->fill([
+                'name' => $request['user_place'],
+                'district_id' => $request['district']
+            ]);
+            $place->save();
+        }
+
+        $request->merge(['place_id' => $place->id]);
+
         $event = new Event();
         $event->store($request);
+
+
         return redirect()->route('success-event');
     }
 
@@ -76,8 +93,13 @@ class EventController extends FrontBaseController
         ])
         ->where('id','!=',$event->id)
         ->where('date_from','>=',date('Y-m-d'))->get();
+
+        $eventBanner = Banner::all()
+            ->where('location', '=', Banner::POSITION_EVENT_DETAIL)
+            ->where('event_id', '=', $event->id)
+            ->first();
      
-        return view('front.event.detail',['event' => $event, 'similarEvents' => $similarEvents]);
+        return view('front.event.detail',['event' => $event, 'similarEvents' => $similarEvents, 'eventBanner' => $eventBanner]);
     }
 
     public function eventList(Request $request) {
@@ -92,7 +114,10 @@ class EventController extends FrontBaseController
         $selectedDistrict = District::find($districtId);
         $selectedCategory = Category::find($categoryId);
 
+        $actionBanner = Banner::all()->where('location', '=', Banner::POSITION_EVENT_LIST);
+
         $eventList = Event::where('approved','=', true);
+//        $eventList = Event::paginate($this->itemsPerPage);
 
         if($categoryId){
             $eventList->where('category_id',(int)$categoryId);
@@ -106,13 +131,19 @@ class EventController extends FrontBaseController
             $eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
         }
 
+        /** @var $eventList Builder */
+
+        $eventList = $eventList->paginate($this->itemsPerPage);
+        $eventList->withPath('?' . $request->getQueryString());
+
         return view('front.event.list', [
-            'events' => $eventList->get(),
+            'events' => $eventList,
             'allCategories' => $allCategories,
             'districts' => $districts,
             'selectedDistrict' => $selectedDistrict,
             'selectedDate' => $date,
-            'selectedCategory' => $selectedCategory
+            'selectedCategory' => $selectedCategory,
+            'actionBanner' => $actionBanner
         ]);
     }
 

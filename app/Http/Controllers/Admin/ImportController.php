@@ -3,136 +3,68 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminBaseController;
+use App\Model\Event;
+use App\Model\Import;
+use App\Model\UploadChunkPlupload;
 use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use JonnyW\PhantomJs\Client;
 use simple_html_dom;
 
 class ImportController extends AdminBaseController{
 
 	public function index() {
-		return view('admin.import.index');
+		$files = glob('../storage/app/temp/udalosti/*');
+		$filesInfo = [];
+		foreach($files as $file) {
+			$filesInfo[] = [
+				'file' => $file,
+				'count' => Import::getEventsCount($file),
+				'file_id' => uniqid()
+			];
+		}
+		return view('admin.import.index', ['filesInfo' => $filesInfo]);
 	}
 
 	public function store(Request $request) {
-
-		//place this before any script you want to calculate time
-		$time_start = microtime(true);
-
-		require_once('../vendor/simple_html_dom/simple_html_dom.php');
 		$file = $request->file('import_file');
-
-		//// Ulozime si soubor
-		$file->storeAs('/temp/udalosti', $file->getClientOriginalName());
-
-		$html = file_get_contents('../storage/app/temp/udalosti/' . $file->getClientOriginalName());
-
-		$dom = new simple_html_dom();
-		$dom->load($html);
-
-		/// Seznam udalosti UL
-		$udalostiUl = $dom->find('ul[class="uiList _4kg _6-i _6-h _6-j"]');
-
-		$udalostiArray = [];
-
-		foreach($udalostiUl as $ul) {
-			$i = 1;
-			foreach($ul->find('li') as $li) {
-				$udalost = [];
-
-				if($nazev = $li->find('a._7ty', 0)){
-					$udalost['nazev'] = $nazev->plaintext;
-					$href = $nazev->href;
-					$id = explode('/', $href)[2];
-					$udalost['url'] = $href;
-					$udalost['id'] = $id;
-				}
-
-				if($popis = $li->find('p._4etw span', 0)) {
-					$udalost['popis'] = $popis->plaintext;
-				}
-
-				$udalost = array_merge($udalost, $this->vratOstatniInformaceZEventu("https://facebook.com/events/".$udalost['id']));
-
-
-				$udalostiArray[] = $udalost;
-
-			}
-		}
-
-		$time_end = microtime(true);
-
-//dividing with 60 will give the execution time in minutes otherwise seconds
-		$execution_time = ($time_end - $time_start)/60;
-
-		dump($execution_time);
-		dd($udalostiArray);
-
-
-//		dump($dom);
-
-		dd("aaa");
-
+		$file->storeAs("temp/udalosti/", $file->getClientOriginalName());
+		return redirect('admin/import');
 	}
 
-	public function vratOstatniInformaceZEventu($eventUrl) {
-		$data = $this->curlDownload($eventUrl);
-		file_put_contents('../storage/app/temp/udalosti/test.html', $data);
-		$html = new simple_html_dom();
-		$html->load($data);
-
-		dump($html->doc);
-		dd($html->find('*[class="_2ycp _5xhk"]', 0));
-
-		$info = [];
-
-		if($date = $html->find('*[class="_2ycp _5xhk"]', 0)) {
-			$info['date'] = $date->content;
-		}
-
-		if($district = $html->find('div[class="_5xhp fsm fwn fcg"]')) {
-			$info['district'] = $district->plaintext;
-		}
-
-		dd($info);
-
-		return $info;
+	public function delete(Request $request) {
+		unlink($request['file']);
+		return redirect('admin/import');
 	}
 
-	public function vratObrazekZPodstranky($imageUrlHref) {
+	public function import(Request $request) {
+		//place this before any script you want to calculate time
+		require_once('../vendor/simple_html_dom/simple_html_dom.php');
 
+		$from = $request['from'];
+		$to = $request['to'];
+		$file = $request['file'];
+		$fileId = $request['file_id'];
+
+
+		$EventsArray = Import::getEventsArray($file, $from, $to);
+		Import::importEvents($EventsArray, $from, $to);
+
+		return response()->json([
+			'success' => 1,
+			'id' => $fileId . "_" . $from
+		]);
 	}
 
-
-	private function curlDownload($url) {
-		$ch = curl_init($url);
-		curl_setopt( $ch, CURLOPT_POST, true );
-		curl_setopt( $ch, CURLOPT_REFERER, 'origin-when-cross-origin' );
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
-		curl_setopt( $ch, CURLINFO_CONTENT_TYPE, "application/x-www-form-urlencoded" );
-		curl_setopt( $ch, CURLOPT_HEADER, false );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 32);
-		curl_setopt($ch, CURLOPT_VERBOSE, true);
-		$data = curl_exec( $ch );
-		return $data;
-
-	}
 
 	public function testCurl() {
-		require_once('../vendor/simple_html_dom/simple_html_dom.php');
-		$data = $this->curlDownload("https://facebook.com/events/394953048124975");
-		$html = new simple_html_dom();
-		$html->load($data);
+		$content = Import::curlImageDownload('https://scontent-prg1-1.xx.fbcdn.net/v/t1.0-9/79317802_2614606471949400_7998555464067448832_o.jpg?_nc_cat=101&_nc_ohc=-ehGYWWYTNIAQmIMrKv9oj_l6uAih2-ggFTtHFvkhjwdNZhj5HBWUOnIQ&_nc_ht=scontent-prg1-1.xx&oh=56849e0eda6e06db20754b2ae108e8aa&oe=5EAAE51F');
+		$photo = fopen("event1" . ".jpg", 'w+');
+		fwrite($photo, $content);
 
-		if($popis = $html->find('*[class="_62hs _4-u3"]',0)) {
-			dd($popis->plaintext);
-		}
+		dd($photo);
 
-		dd($html->plaintext);
 	}
 
 
