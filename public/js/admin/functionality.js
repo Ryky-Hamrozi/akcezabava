@@ -206,6 +206,23 @@ $(document).ready(function(){
             $link = $('#'+data.id);
             $link.find('img').attr('src', '/img/admin/checked_green.svg').show();
             $link.find('.loader').hide();
+
+            if(data.errors) {
+
+                $errorsArray = JSON.parse(data.errors);
+                $errors = "";
+
+                for($i = 0; $i < $errorsArray.length; $i++) {
+                    $fbUrl = $errorsArray[$i].fb_url;
+                    $error = $errorsArray[$i].error;
+
+                    $errors += '<div class="alert alert-danger"><a href="'+($fbUrl)+'" target="_blank">' + ($fbUrl) +'</a> <br> ' + ($error) +' </div>';
+                }
+
+                $link.attr('href', '');
+
+                $link.parent().find('.js-import-errors-'+data.id).html($errors);
+            }
         });
 
         return false;

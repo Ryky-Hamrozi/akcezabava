@@ -48,22 +48,23 @@ class ImportController extends AdminBaseController{
 		$fileId = $request['file_id'];
 
 
-		$EventsArray = Import::getEventsArray($file, $from, $to);
-		Import::importEvents($EventsArray, $from, $to);
+
+		$data = Import::getEventsArray($file, $from, $to);
+		$udalostiErrors = $data['udalostiErrors'];
+
+		Import::importEvents($data['udalostiArray']);
 
 		return response()->json([
 			'success' => 1,
-			'id' => $fileId . "_" . $from
+			'id' => $fileId . "_" . $from,
+			'errors' => json_encode($udalostiErrors)
 		]);
 	}
 
 
 	public function testCurl() {
-		$content = Import::curlImageDownload('https://scontent-prg1-1.xx.fbcdn.net/v/t1.0-9/79317802_2614606471949400_7998555464067448832_o.jpg?_nc_cat=101&_nc_ohc=-ehGYWWYTNIAQmIMrKv9oj_l6uAih2-ggFTtHFvkhjwdNZhj5HBWUOnIQ&_nc_ht=scontent-prg1-1.xx&oh=56849e0eda6e06db20754b2ae108e8aa&oe=5EAAE51F');
-		$photo = fopen("event1" . ".jpg", 'w+');
-		fwrite($photo, $content);
-
-		dd($photo);
+		$content = Import::getLocality('Všechovice (okres Přerov)');
+		dd($content);
 
 	}
 

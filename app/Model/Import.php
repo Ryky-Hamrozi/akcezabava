@@ -25,18 +25,9 @@ class Import extends Model
 		return $out;
 	}
 
-	public static function importEvents($eventsArray, $from, $to) {
+	public static function importEvents($eventsArray) {
 		$i = 0;
 		foreach($eventsArray as $event) {
-
-			if($i < $from) {
-				$i++;
-				continue;
-			}
-
-			if($i > $to) {
-				break;
-			}
 
 			/// Nekdy se stava ze eventy prochazi prazdne zatim nvm proc
 			if(!isset($event['fb_id'])) {
@@ -47,6 +38,7 @@ class Import extends Model
 			if($Event = Event::where('fb_id', '=', $event['fb_id'])->first()) {
 				continue;
 			}
+
 
 			if(!$District = District::where('name', '=', $event['district'])->first()) {
 				$District = new District();
@@ -59,7 +51,7 @@ class Import extends Model
 			if(!$Place = Place::where('name', '=', $event['place'])->first()) {
 				$Place = new Place();
 				$Place->fill([
-					'name' => $event['place'],
+					'name' => trim($event['place']),
 					'district_id' => $District->id
 				]);
 				$Place->save();
@@ -147,6 +139,7 @@ class Import extends Model
 		$udalostiUl = $dom->find('ul[class="uiList _4kg _6-i _6-h _6-j"]');
 
 		$udalostiArray = [];
+		$udalostiErrors = [];
 
 		foreach($udalostiUl as $ul) {
 			$i = 0;
@@ -171,7 +164,20 @@ class Import extends Model
 					$udalost['fb_url'] = "https://www.facebook.com/events/".$id;
 					$udalost['fb_id'] = $id;
 
-					$udalost = array_merge($udalost, self::vratOstatniInformaceZEventu("https://www.facebook.com/events/".$udalost['fb_id']));
+					$udalostInfo = self::vratOstatniInformaceZEventu("https://www.facebook.com/events/".$udalost['fb_id']);
+					$udalost = array_merge($udalost, $udalostInfo);
+
+					//// Udalosti ktere vyzaduji nejspis prihlaseni preskocit
+					//// Nema vice nez dve informace
+					if(count($udalostInfo) < 2) {
+						$udalostiErrors[] = array(
+							'fb_url' => $udalost['fb_url'],
+							'fb_id' => $udalost['fb_id'],
+							'error' => 'Událost vyžaduje přihlášení byla přeskočena'
+						);
+						continue;
+					}
+				} else {
 				}
 
 				$udalost['approved'] = true;
@@ -194,10 +200,45 @@ class Import extends Model
 		}
 
 
+		return array(
+			'udalostiArray' => $udalostiArray,
+			'udalostiErrors' => $udalostiErrors
+		);
 
+	}
 
-		return $udalostiArray;
+	public static function getLocality($address) {
+		$address = str_replace(' ', '+', $address);
+		$url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key=AIzaSyAnaBpf8OAbqCLf8Cg7rowpjEmubbswZfA";
 
+		// Decode json
+		$json = self::curlDownload($url);
+		$decoded_json = json_decode($json);
+
+		$locality = false;
+		$administrative_area_level_2 = false;
+
+		foreach($decoded_json->results as $results) {
+			foreach($results->address_components as $address_components) {
+				// Check types is set then get first element (may want to loop through this to be safe,
+				// rather than getting the first element all the time)
+				if(isset($address_components->types) && $address_components->types[0] == 'administrative_area_level_2') {
+					// Do what you want with data here
+					$administrative_area_level_2 = $address_components->long_name;
+				}
+				if(isset($address_components->types) && $address_components->types[0] == 'locality') {
+					// Do what you want with data here
+					$locality = $address_components->long_name;
+				}
+			}
+		}
+
+		if(!$locality) {
+			$administrative_area_level_2 = str_replace('-město', '', $administrative_area_level_2);
+			return $administrative_area_level_2;
+		}
+
+		return $locality;
 	}
 
 	public static function vratOstatniInformaceZEventu($eventUrl) {
@@ -210,6 +251,11 @@ class Import extends Model
 
 		if($place = $html->find('._3xd0._3slj div[class="_5xhp fsm fwn fcg"]', 0)) {
 			$place = $place->plaintext;
+			if(!$place) {
+				if($place = $html->find('._3xd0._3slj ._6a ._6a._6b ._xkh a._5xhk', 0)) {
+					$place = $place->plaintext;
+				}
+			}
 			$exploded = explode(',', $place);
 
 			if($club = $html->find('._6a._6b ._xkh a._5xhk', 0)) {
@@ -217,10 +263,10 @@ class Import extends Model
 			}
 
 			/// Mesto je vzdy na konci
-			$district = $exploded[count($exploded) - 1];
+//			$district = $exploded[count($exploded) - 1];
 
-			$info['district'] = $district;
-			$info['place'] = $club . " " . str_replace($district, '', $place);
+			$info['district'] = self::getLocality($place);
+			$info['place'] = $club . " " . $place;
 		}
 
 		if($popis = $html->find('._63eu ._63ew span',0)) {
@@ -254,7 +300,7 @@ class Import extends Model
 			$property = 'data-ploi';
 			$info['image'] = htmlspecialchars_decode($image->$property);
 		} else {
-			/// Neni to obrazek? tak je to video musime ho vz�t z n�hledu udalosti (spatna kvalita..)
+			/// Neni to obrazek? tak je to video musime ho vzít z náhledu udalosti (spatna kvalita..)
 			$info['image'] = false;
 		}
 
@@ -293,33 +339,30 @@ class Import extends Model
 	public static function curlDownload($url) {
 
 		$header = array(
-//			':authority: scontent-prg1-1.xx.fbcdn.net',
-//			':method: GET',
-//			':path: /v/t1.0-9/79317802_2614606471949400_7998555464067448832_o.jpg?_nc_cat=101&_nc_ohc=-ehGYWWYTNIAQmIMrKv9oj_l6uAih2-ggFTtHFvkhjwdNZhj5HBWUOnIQ&_nc_ht=scontent-prg1-1.xx&oh=56849e0eda6e06db20754b2ae108e8aa&oe=5EAAE51F',
-//			':scheme: https',
-			'accept: image/webp,image/apng',
-			'accept-encoding: gzip, deflate, br',
-			'accept-language: cs-CZ,cs;q=0.9',
-			'cache-control: no-cache',
+//			'access-control-allow-origin: *',
+//			'alt-svc: quic=":443"; ma=2592000; v="46,43",h3-Q050=":443"; ma=2592000,h3-Q049=":443"; ma=2592000,h3-Q048=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000',
+			'cache-control: no-cache, must-revalidate',
+//			'content-encoding: gzip',
+//			'content-length: 538',
+			'content-type: application/json; charset=UTF-8',
+			'date: Sat, 28 Dec 2019 20:09:13 GMT',
+			'expires: Fri, 01 Jan 1990 00:00:00 GMT',
 			'pragma: no-cache',
-			'sec-fetch-mode: navigate',
-			'sec-fetch-site: none',
-			'sec-fetch-user: ?1',
-			'upgrade-insecure-requests: 1',
-			'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
+			'server: mafe',
+			'server-timing: gfet4t7; dur=45',
+			'status: 200',
+			'vary: Accept-Language',
+			'x-frame-options: SAMEORIGIN',
+			'x-xss-protection: 0',
 		);
 
 		$ch = curl_init($url);
-		curl_setopt( $ch, CURLOPT_POST, true );
-		curl_setopt( $ch, CURLOPT_REFERER, 'origin-when-cross-origin' );
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-//		curl_setopt( $ch, CURLOPT_HEADER, false );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 32);
-		curl_setopt($ch, CURLOPT_VERBOSE, true);
+		curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		$data = curl_exec( $ch );
 		return $data;
 

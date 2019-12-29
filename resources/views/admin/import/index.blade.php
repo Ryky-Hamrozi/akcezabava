@@ -21,7 +21,7 @@
         <tr>
             <th></th>
             <th>NÁZEV</th>
-            <th>Importovat po částech</th>
+            <th class="text-right">Importovat po částech</th>
             <th>Smazat soubor</th>
         </tr>
         </thead>
@@ -42,14 +42,16 @@
                                         {{$i}}
                                         - @if($i + $limit > $file['count']){{$file['count']}}@else{{$i + $limit}}@endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a id="{{$j}}_{{$i}}"
                                            href="import-events?file={{$file['file']}}&file_id={{$j}}&from={{$i}}&to=@if($i + $limit > $file['count']){{$file['count']}}@else{{$i + $limit}}@endif"
                                            class="ajax-import">
-                                            <img src="{{asset('img/admin/plus_black.svg')}}" alt="Importovat">
-
+                                            <img src="{{asset('img/admin/plus_black.svg')}}" alt="Importovat" class="button-import">
                                             <div class="loader"></div>
                                         </a>
+                                        <div class="js-import-errors-{{$j}}_{{$i}}">
+
+                                        </div>
                                     </td>
                                 </tr>
                             @endfor
@@ -62,6 +64,7 @@
                        name="smazat" type="button"><img
                                 src="{{asset('img/admin//remove.svg')}}" alt="Smazat"></a>
                 </td>
+
             </tr>
         @empty
             @php($j++)
