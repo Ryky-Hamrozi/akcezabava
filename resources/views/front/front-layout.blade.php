@@ -11,7 +11,7 @@
     <meta name="keywords" content="HTML,CSS,XML,JavaScript" />
     <meta name="author" content="LEKSYS s.r.o. www.leksys.cz" />
 
-    <link rel="stylesheet" media="screen" href="{{asset('css/front/style.css')}}" />
+    <link rel="stylesheet" media="screen" href="{{asset('css/front/style.css?')}}?v=1" />
     <link rel="stylesheet" media="screen" href="{{asset('css/front/devices.css')}}" />
     <link rel="stylesheet" media="screen" href="{{asset('css/front/jquery-ui.min.css')}}" />
     <link rel="stylesheet" media="screen" href="{{asset('css/admin/select2.min.css')}}" />
@@ -90,7 +90,7 @@
             <header class="flx sb-c">
                 <a class="logo" href="/"><img src="{{asset('img/front/logo.png')}}" alt="Logo"></a>
                 <div class="right-side flx-c">
-                    <a class="menu-btn" href="{{route('akce-a-zabava')}}" title="AKCE A ZÁBAVA"><img src="{{asset('img/front/hipe.svg')}}" alt="AKCE A ZÁBAVA">AKCE A ZÁBAVA</a>
+                    <a class="menu-btn" href="{{route('akce-a-zabava')}}" title="AKCE A ZÁBAVA"><img src="{{asset('img/front/hipe.svg')}}" alt="AKCE A ZÁBAVA">AKCE ZÁBAVA MAGAZÍN</a>
                    {{-- <a class="menu-btn" href="" title="KINA V OKOLÍ"><img src="{{asset('img/front/camera.svg')}}" alt="KINA V OKOLÍ">KINA V OKOLÍ</a> --}}
                     <a class="button" href="{{route('new-event')}}">Vložit událost</a>
                 </div>

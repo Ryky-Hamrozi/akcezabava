@@ -93,7 +93,8 @@ class ImageGenerator {
 			return $urlPath . "?v=" . filemtime($newImagePath) ;
 		}
 
-		$newImage = \Intervention\Image\Facades\Image::make($path);
+		$fullPath = public_path() . "/" .$path;
+		@$newImage = \Intervention\Image\Facades\Image::make($fullPath);
 
 		//// Ma zvolenou metodu vygenerovani obrazku?
 		if(isset(self::$conf[$confIndex][self::METHOD])) {

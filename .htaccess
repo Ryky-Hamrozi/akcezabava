@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Rewrite static resources
+RewriteCond %{DOCUMENT_ROOT}/akce-zabava/public/$1 -f
+RewriteRule (.+) akce-zabava/public/$1 [L]
+
+# Rewrite everything else to the "public" directory
+RewriteRule .* akce-zabava/public/ [L]

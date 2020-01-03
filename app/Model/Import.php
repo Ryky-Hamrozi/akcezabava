@@ -27,7 +27,21 @@ class Import extends Model
 
 	public static function importEvents($eventsArray) {
 		$i = 0;
+
+		$udalostiErrors = [];
+
 		foreach($eventsArray as $event) {
+
+			//// 10 prvku by měla mit udalost
+			if(count($event) < 7) {
+				$udalostiErrors[] = array(
+					'fb_url' => $event['fb_url'],
+					'fb_id' => $event['fb_id'],
+					'error' => 'Udalost bude preskocena byla spatne naimportovana zkuste to znovu'
+				);
+
+				continue;
+			}
 
 			/// Nekdy se stava ze eventy prochazi prazdne zatim nvm proc
 			if(!isset($event['fb_id'])) {
@@ -91,13 +105,13 @@ class Import extends Model
 				'place_id' => $Place->id,
 				'categories' => implode(',', $categories),
 				'category_id' => isset($Category) ? $Category->id : 1,
-				'contact_id' => $event['contact_id'],
+				'contact_id' => 1,
 				'keywords' => isset($event['keywords']) ? $event['keywords'] : ""
 			]);
 			$Event->save();
 
 			$image = self::curlImageDownload($event['image']);
-			$path = $Event->id . ".jpg";
+			$path = public_path() . "/" . $Event->id . ".jpg";
 			$photo = fopen($path, 'w+');
 			fwrite($photo, $image);
 
@@ -107,6 +121,10 @@ class Import extends Model
 
 			$i++;
 		}
+
+		return [
+			'udalostiErrors' => $udalostiErrors
+		];
 	}
 
 	public static function getEventsCount($file) {
@@ -121,6 +139,10 @@ class Import extends Model
 		$count = 0;
 
 		foreach($udalostiLi as $li) {
+			$nazev = $li->find('a._7ty', 0);
+			if(!$nazev) {
+				continue;
+			}
 			$count++;
 		}
 
@@ -144,6 +166,12 @@ class Import extends Model
 		foreach($udalostiUl as $ul) {
 			$i = 0;
 			foreach($ul->find('li') as $li) {
+
+				$nazev = $li->find('a._7ty', 0);
+				if(!$nazev) {
+					continue;
+				}
+
 				if($i < $from) {
 					$i++;
 					continue;
@@ -155,7 +183,7 @@ class Import extends Model
 
 				$udalost = [];
 
-				if($nazev = $li->find('a._7ty', 0)){
+				if($nazev){
 					$udalost['title'] = $nazev->plaintext;
 					$href = $nazev->href;
 					$url = $href;
@@ -181,10 +209,6 @@ class Import extends Model
 				}
 
 				$udalost['approved'] = true;
-				$udalost['district_id'] = 1;
-				$udalost['place_id'] = 3;
-				$udalost['category_id'] = 1;
-				$udalost['contact_id'] = 1;
 
 				/// Pokud neni obrazek z detailu?
 				if(isset($udalost['image']) && !$udalost['image']) {
@@ -310,10 +334,14 @@ class Import extends Model
 
 	public static function phantomJsGetContent($url, $image = false) {
 
-		require_once('phantom-js/vendor/autoload.php');
+		require_once('phantomJs/vendor/autoload.php');
 
 		$client = Client::getInstance();
-		$client->getEngine()->setPath($_SERVER['DOCUMENT_ROOT'] . '/phantom-js/bin/phantomjs.exe');
+		if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
+			$client->getEngine()->setPath(public_path() . '/phantomJs/bin/phantomjs.exe');
+		} else {
+			$client->getEngine()->setPath(public_path() . '/phantomJs/bin/linux-phantomjs');
+		}
 		$request = $client->getMessageFactory()->createRequest($url, 'GET');
 
 		if($image) {
@@ -334,6 +362,11 @@ class Import extends Model
 			// Dump the requested page content
 			return $response->getContent();
 		}
+
+		dump($client);
+
+
+		echo $client->getLog();
 	}
 
 	public static function curlDownload($url) {
@@ -389,15 +422,15 @@ class Import extends Model
 
 		$ch = curl_init($url);
 //		curl_setopt( $ch, CURLOPT_POST, true );
-		curl_setopt( $ch, CURLOPT_REFERER, 'origin-when-cross-origin' );
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+//		curl_setopt( $ch, CURLOPT_REFERER, 'origin-when-cross-origin' );
+//		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+//		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 //		curl_setopt( $ch, CURLOPT_HEADER, false );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 32);
-		curl_setopt($ch, CURLOPT_VERBOSE, true);
+//		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+//		curl_setopt($ch, CURLOPT_SSLVERSION, 32);
+//		curl_setopt($ch, CURLOPT_VERBOSE, true);
 		$data = curl_exec( $ch );
 		return $data;
 

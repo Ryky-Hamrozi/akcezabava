@@ -1723,3 +1723,22 @@ background-color: #d71921;
   
 color: white;
 }
+
+.akce-zabava-magazin {
+
+}
+
+.akce-zabava-magazin p {
+margin-bottom: 7px;
+line-height: 18px;
+}
+
+.akce-zabava-magazin h3 {
+  font-weight: bold;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.akce-zabava-magazin a {
+  color: #d71921;
+}
