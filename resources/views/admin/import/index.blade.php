@@ -28,7 +28,7 @@
         <tbody>
         @php($j = 0)
         @if($filesInfo)
-        @forelse($filesInfo as $file)
+        @foreach($filesInfo as $file)
             <tr class="">
                 <td></td>
                 <td><strong>{{pathinfo($file['file'], PATHINFO_BASENAME)}}</strong></td>
@@ -66,9 +66,8 @@
                 </td>
 
             </tr>
-        @empty
             @php($j++)
-        @endforelse
+        @endforeach
             @endif
         </tbody>
     </table>

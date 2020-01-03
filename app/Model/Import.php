@@ -363,9 +363,6 @@ class Import extends Model
 			return $response->getContent();
 		}
 
-		dump($client);
-
-
 		echo $client->getLog();
 	}
 

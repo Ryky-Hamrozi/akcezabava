@@ -97,6 +97,8 @@
                             <span class="spinner diagonal part-2"></span>
                         </label>
                     </div>
+                    &nbsp; | &nbsp;
+                    <a href="{{route('logout')}}">Odhlásit se</a>
                 </div>
             </div>
         </header>
