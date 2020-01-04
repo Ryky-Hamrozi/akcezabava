@@ -208,7 +208,7 @@ class Import extends Model
 				} else {
 				}
 
-				$udalost['approved'] = true;
+				$udalost['approved'] = false;
 
 				/// Pokud neni obrazek z detailu?
 				if(isset($udalost['image']) && !$udalost['image']) {
@@ -307,7 +307,9 @@ class Import extends Model
 			}
 
 			$dateFrom = new \DateTime($dateFrom);
+			$dateFrom->modify("+9 hours"); ///Facebook logika skrytych hodin
 			$dateTo = new \DateTime($dateTo);
+			$dateTo->modify('+9 hours'); ///Facebook logika skrytych hodin
 			$info['date_from'] = $dateFrom->format('Y-m-d H:i:s');
 			$info['date_to'] = $dateTo->format('Y-m-d H:i:s');
 		}
@@ -418,16 +420,18 @@ class Import extends Model
 		);
 
 		$ch = curl_init($url);
-//		curl_setopt( $ch, CURLOPT_POST, true );
-//		curl_setopt( $ch, CURLOPT_REFERER, 'origin-when-cross-origin' );
-//		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
-//		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-//		curl_setopt( $ch, CURLOPT_HEADER, false );
+		if($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
+//			curl_setopt( $ch, CURLOPT_POST, true );
+//			curl_setopt( $ch, CURLOPT_REFERER, 'origin-when-cross-origin' );
+			curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+			curl_setopt( $ch, CURLOPT_HEADER, false );
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($ch, CURLOPT_SSLVERSION, 32);
+			curl_setopt($ch, CURLOPT_VERBOSE, true);
+		}
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-//		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-//		curl_setopt($ch, CURLOPT_SSLVERSION, 32);
-//		curl_setopt($ch, CURLOPT_VERBOSE, true);
 		$data = curl_exec( $ch );
 		return $data;
 

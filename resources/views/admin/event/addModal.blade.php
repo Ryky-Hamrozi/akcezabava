@@ -37,7 +37,7 @@
                         <label for="district">Okres</label>
                     <select id="district" name="district" class="dependent-select-parent" data-child="#place" data-url="{{route('getDistrictPlaces')}}" data-token="{{csrf_token()}}">
                             @foreach(App\Model\District::all() as $district)
-                                <option value="{{$district->id}}" {{isset($item->$district) && $item->district->id == $district->id ? "selected" : ''}}>{{$district->name}}</option>
+                                <option value="{{$district->id}}" {{isset($item->district) && $item->district->id == $district->id ? "selected" : ''}}>{{$district->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -168,6 +168,10 @@
     </div>
 </div>
 
+<script type="text/javascript" src="{{asset('js/admin/tinymce/tinymce.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/admin/tinymce/jquery.tinymce.min.js')}}"></script>
+
+
 <script>
     $(document).ready(function(){
         var dateStart, dateEnd, timeStart, timeEnd;
@@ -213,6 +217,10 @@
         timePickerOptions.defaultTime = timeEnd;
         $('#time-end').timepicker(timePickerOptions);
 
+      
+            tinymce.init({
+                selector: '.mytextarea'
+            });
 
     });
 </script>

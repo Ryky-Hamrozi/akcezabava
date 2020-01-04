@@ -64,3 +64,6 @@ Route::namespace('Auth')->group(function(){
     Route::get('admin','LoginController@showLoginForm');
 });
 
+Route::get('admin',function(){
+    return redirect('admin/dashboard');
+});

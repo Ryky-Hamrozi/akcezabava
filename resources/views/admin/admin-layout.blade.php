@@ -24,9 +24,6 @@
     <script src="{{asset('js/admin/web.js')}}"></script>
     <script src="{{asset('js/admin/functionality.js')}}"></script>
 
-    <script type="text/javascript" src="{{asset('js/admin/tinymce/tinymce.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/admin/tinymce/jquery.tinymce.min.js')}}"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
 

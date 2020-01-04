@@ -66,9 +66,6 @@ $(document).ready(function(){
                 $("#new-action-modal").css("display", "flex").animate({opacity: 1}, 300);
                 $(".overlay").fadeIn(300);
 
-                tinymce.init({
-                    selector: '.mytextarea'
-                });
 
             }
         })

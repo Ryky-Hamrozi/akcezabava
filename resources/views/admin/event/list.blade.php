@@ -49,7 +49,7 @@
                     <td data-name="Konec">{{$event->date_to}}</td>
                     <td data-name="Pořadatel">{{$event->contact ? $event->contact->name : ''}}</td>
                     <td data-name="Foto">{{$event->getImagesInfo()}}</td>
-                    <td data-name="Poslední změna">{{$event->changed_at}}</td>
+                    <td data-name="Poslední změna">{{$event->updated_at}}</td>
                     <td data-name="Akce" class="action">
                         <button class="ac-btn get-modal-content" title="Náhled" data-tooltip="náhled"
                                 data-token="{{csrf_token()}}" data-id="{{$event->id}}" data-model="{{get_class($event)}}"

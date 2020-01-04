@@ -33,8 +33,13 @@
                 <td></td>
                 <td><strong>{{pathinfo($file['file'], PATHINFO_BASENAME)}}</strong></td>
                 <td>
-                    @php($limit = 5)
-                    @if($file['count'] > $limit)
+                    <?php
+                        $limit = 5;
+                        if($file['count'] < $limit) {
+                            $limit = $file['count'];
+                        }
+                    ?>
+
                         <table class="table">
                             @for($i = 0; $i < $file['count']; $i = $i + $limit)
                                 <tr>
@@ -56,7 +61,7 @@
                                 </tr>
                             @endfor
                         </table>
-                    @endif
+
                     Celkem událostí - {{$file['count']}}
                 </td>
                 <td>
