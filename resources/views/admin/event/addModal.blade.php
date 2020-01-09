@@ -111,7 +111,7 @@
                         <label for="category">Kategorie</label>
                         <select id="category" name="category">
                             @foreach(App\Model\Category::all() as $category)
-                                <option value="{{$category->id}}" {{isset($item->$category) && $item->category->id == $category->id ? "selected" : ''}}>{{$category->name}}</option>
+                                <option value="{{$category->id}}" {{isset($item->category) && $item->category->id == $category->id ? "selected" : ''}}>{{$category->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -217,7 +217,7 @@
         timePickerOptions.defaultTime = timeEnd;
         $('#time-end').timepicker(timePickerOptions);
 
-      
+
             tinymce.init({
                 selector: '.mytextarea'
             });
