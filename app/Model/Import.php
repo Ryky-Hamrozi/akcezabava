@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Model\Event;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use JonnyW\PhantomJs\Client;
 use simple_html_dom;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,6 +25,34 @@ class Import extends Model
 		$out = str_replace('&amp;', '', $title);
 		return $out;
 	}
+
+	public static function importPlaces() {
+        $mista = DB::connection('mysql2')->table('mista');
+        foreach ($mista->get()->toArray() as $misto) {
+
+            $placeStr = $misto->nazev. " " . $misto->ulice . " " . $misto->cp . ", " . $misto->mesto . " " . $misto->psc;
+
+            if(!$District = District::where('name', '=', $misto->mesto)->first()) {
+                $District = new District();
+                $District->fill([
+                    'name' => $misto->mesto
+                ]);
+                $District->save();
+            }
+
+            if(!$Place = Place::where('name', '=', $placeStr)->first()) {
+                $Place = new Place();
+                $Place->fill([
+                    'name' => trim($placeStr),
+                    'district_id' => $District->id
+                ]);
+                $Place->save();
+            }
+        }
+
+
+        echo "Dokonceno";
+    }
 
 	public static function importEvents($eventsArray) {
 		$i = 0;
@@ -50,6 +79,11 @@ class Import extends Model
 
 			/// Event existuje
 			if($Event = Event::where('fb_id', '=', $event['fb_id'])->first()) {
+                $udalostiErrors[] = array(
+                    'fb_url' => $event['fb_url'],
+                    'fb_id' => $event['fb_id'],
+                    'error' => 'Udalost již existuje v databazi byla přeskočena'
+                );
 				continue;
 			}
 
@@ -193,18 +227,21 @@ class Import extends Model
 					$udalost['fb_id'] = $id;
 
 					$udalostInfo = self::vratOstatniInformaceZEventu("https://www.facebook.com/events/".$udalost['fb_id']);
+
+                    //// Udalosti ktere vyzaduji nejspis prihlaseni preskocit
+                    if(!is_array($udalostInfo)) {
+                        $udalostiErrors[] = array(
+                            'fb_url' => $udalost['fb_url'],
+                            'fb_id' => $udalost['fb_id'],
+                            'error' => 'Událost vyžaduje přihlášení byla přeskočena'
+                        );
+                        continue;
+                    }
+
 					$udalost = array_merge($udalost, $udalostInfo);
 
-					//// Udalosti ktere vyzaduji nejspis prihlaseni preskocit
-					//// Nema vice nez dve informace
-					if(count($udalostInfo) < 2) {
-						$udalostiErrors[] = array(
-							'fb_url' => $udalost['fb_url'],
-							'fb_id' => $udalost['fb_id'],
-							'error' => 'Událost vyžaduje přihlášení byla přeskočena'
-						);
-						continue;
-					}
+
+
 				} else {
 				}
 
@@ -273,6 +310,12 @@ class Import extends Model
 
 		$info = [];
 
+
+		//// Udalost vyzaduje prihlaseni
+		if($html->find('._5jb3', 0)) {
+            return false;
+        }
+
 		if($place = $html->find('._3xd0._3slj div[class="_5xhp fsm fwn fcg"]', 0)) {
 			$place = $place->plaintext;
 			if(!$place) {
@@ -330,6 +373,10 @@ class Import extends Model
 			$info['image'] = false;
 		}
 
+		///// Pokud se event neimportuje tak jak by mel
+		if(!isset($info['description'])) {
+		    $info = self::vratOstatniInformaceZEventu($eventUrl);
+        }
 
 		return $info;
 	}
@@ -362,7 +409,24 @@ class Import extends Model
 		if($response->getStatus() === 200) {
 
 			// Dump the requested page content
-			return $response->getContent();
+            $res = $response->getContent();
+
+            $html = new simple_html_dom();
+            $html->load($res);
+
+            if($title = $html->find('title', 0)) {
+                if($title->plaintext == 'Redirecting...') {
+                    $script = $html->find('script', 1);
+                    $str = $script->innertext;
+                    $str = str_replace('window.location.replace("', '', $str);
+                    $str = str_replace("\\", '', $str);
+                    $str = str_replace('");', '', $str);
+                    $redirectUrl = $str;
+                    return self::phantomJsGetContent($redirectUrl);
+                }
+            }
+
+            return $res;
 		}
 
 		echo $client->getLog();
@@ -433,6 +497,9 @@ class Import extends Model
 		}
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		$data = curl_exec( $ch );
+		if(!$data) {
+		    self::curlImageDownload($url);
+        }
 		return $data;
 
 	}

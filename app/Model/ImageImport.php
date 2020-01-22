@@ -40,6 +40,7 @@ class ImageImport extends Model
         $thumbnailPath = $path. '/'. 'thumbnail_' . $name;
 
         if(!File::exists($path)) mkdir($path, 0777, true);
+
         $image = Img::make($photoPath);
         $image->save($fullPath);
         $image->resize(150, null, function ($constraint) {
