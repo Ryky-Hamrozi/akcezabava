@@ -33,7 +33,7 @@ $(document).ready(function(){
         removeImage($(this));
     });
 
-    $('.approve').on('change',function(){
+    $('body').on('change', '.approve',function(){
        approveEvent($(this));
     });
 
@@ -161,13 +161,16 @@ $(document).ready(function(){
             method: "POST",
             url: url,
             data: { id: id, _token: token  },
-            success : function(items){
+            success : function(response){
+                $('.js-flashes').html(response.flashes);
+                $('.js-events-table').html(response.events);
+                $('.js-approval-count').html(response.eventsCount);
             },
             error : function(response){
                 if(response.status == 422){
                     $('input:checked').removeAttr('checked');
                     alert(response.responseJSON.message);
-                }               
+                }
             },
         });
     }

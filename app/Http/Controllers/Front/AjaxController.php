@@ -62,6 +62,9 @@ class AjaxController extends FrontBaseController {
 			$eventList->where('district_id',(int)$districtId);
 		}
 
+        /// Ukoncene akce nezobrazovat
+        $eventList->whereDate('date_to', '>=', date('Y-m-d') .' 00:00:00');
+
 		if($date) {
 			$eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
 		} else {
@@ -69,6 +72,8 @@ class AjaxController extends FrontBaseController {
 //				->whereDate('date_from', '>=', date('Y-m-d'))
 //				->whereDate('date_to', '>=', date('Y-m-d'));
 		}
+
+
 
 		$eventList->orderBy('date_from');
 

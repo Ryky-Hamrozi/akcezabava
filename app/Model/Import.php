@@ -218,7 +218,6 @@ class Import extends Model
 				$udalost = [];
 
 				if($nazev){
-					$udalost['title'] = $nazev->plaintext;
 					$href = $nazev->href;
 					$url = $href;
 					$exploded = explode('/', parse_url($url, PHP_URL_PATH));
@@ -314,6 +313,10 @@ class Import extends Model
 		//// Udalost vyzaduje prihlaseni
 		if($html->find('._5jb3', 0)) {
             return false;
+        }
+
+        if($title = $html->find('._42ef ._5gmw h1', 0)) {
+            $info['title'] = $title->plaintext;
         }
 
 		if($place = $html->find('._3xd0._3slj div[class="_5xhp fsm fwn fcg"]', 0)) {

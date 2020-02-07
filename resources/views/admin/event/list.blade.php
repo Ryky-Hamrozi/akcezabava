@@ -3,6 +3,7 @@
 @section('title', 'Akce')
 
 @section('content')
+
     <div class="flx sb-c mt30 devpow">
         <h1 class="title">Všechny <span>akce dle parametru</span></h1>
         <button class="button add addAction" type="button" data-token="{{csrf_token()}}"
@@ -27,14 +28,14 @@
             <thead>
             <tr>
                 <th><input name="" type="checkbox"></th>
-                <th>NÁZEV</th>
-                <th>OKRES</th>
-                <th>MÍSTO</th>
-                <th>ZAČÁTEK</th>
-                <th>KONEC</th>
-                <th>POŘADATEL</th>
+                <th>@sortablelink('title', 'NÁZEV')</th>
+                <th>@sortablelink('district_id', 'OKRES')</th>
+                <th>@sortablelink('place_id', 'MÍSTO')</th>
+                <th>@sortablelink('date_from', 'ZAČÁTEK')</th>
+                <th>@sortablelink('date_to', 'KONEC')</th>
+                <th>@sortablelink('contact_id', 'POŘADATEL')</th>
                 <th>FOTO</th>
-                <th>POSLEDNÍ ZMĚNA</th>
+                <th>@sortablelink('updated_at', 'POSLEDNÍ ZMĚNA')</th>
                 <th>AKCE</th>
             </tr>
             </thead>

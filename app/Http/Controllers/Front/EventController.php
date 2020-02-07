@@ -89,7 +89,7 @@ class EventController extends FrontBaseController
 
         $similarEvents = Event::where([
             'approved' => 1,
-            'category_id' => $event->category_id,            
+            'category_id' => $event->category_id,
         ])
         ->where('id','!=',$event->id)
         ->where('date_from','>=',date('Y-m-d'))->get();
@@ -98,7 +98,7 @@ class EventController extends FrontBaseController
             ->where('location', '=', Banner::POSITION_EVENT_DETAIL)
             ->where('event_id', '=', $event->id)
             ->first();
-     
+
         return view('front.event.detail',['event' => $event, 'similarEvents' => $similarEvents, 'eventBanner' => $eventBanner]);
     }
 
@@ -131,10 +131,14 @@ class EventController extends FrontBaseController
             $eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
         }
 
+        /// Ukoncene akce nezobrazovat
+        $eventList->whereDate('date_to', '>=', date('Y-m-d', $date) .' 00:00:00');
+
         /** @var $eventList Builder */
 
         $eventList = $eventList->paginate($this->itemsPerPage);
         $eventList->withPath('?' . $request->getQueryString());
+
 
         return view('front.event.list', [
             'events' => $eventList,

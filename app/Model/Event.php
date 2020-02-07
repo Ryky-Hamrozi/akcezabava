@@ -5,9 +5,15 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Kyslik\ColumnSortable\Sortable;
 
 class Event extends Model
 {
+
+    use Sortable;
+
+    public $sortable = ['title', 'date_from', 'date_to', 'district_id', 'place_id', 'created_at', 'fb_url', 'contact_id', 'updated_at'];
+
     protected $guarded = ['id'];
 
     public function getDateFromAttribute($value){
@@ -84,7 +90,7 @@ class Event extends Model
     }
 
     public function getMainImage(){
-        $img = $this->images()->first();      
+        $img = $this->images()->first();
         if($img){
             return $img->path;
         }
@@ -158,7 +164,7 @@ class Event extends Model
         else{
             $this->fill($data);
             $this->save();
-        }        
+        }
         $this->processImages($request,$this);
 
         return $this;
@@ -200,7 +206,7 @@ class Event extends Model
             $data['contact_id'] = $this->processContact($request);
         }
 
-        if($request->has('user_place')){            
+        if($request->has('user_place')){
             $data['place_text'] = $request->get('user_place');
         }
 
@@ -217,7 +223,7 @@ class Event extends Model
     }
 
     private function processImages($request,$event){
-       
+
         $deletedImages = $request->get('deleted-images');
         $deletedImagesIds = [];
         if($deletedImages){
@@ -229,8 +235,8 @@ class Event extends Model
         }
         if($request->images){
             $i = 1;
-            foreach($request->file('images') as $img){                
-                if($img){                 
+            foreach($request->file('images') as $img){
+                if($img){
                     $image = new Image();
                     $image->uploadImage($img,$event);
                     //// Smaze obrazky pokud jich je vic..
@@ -251,7 +257,7 @@ class Event extends Model
         $contact = Contact::firstOrNew(['name' => $request->person, 'email' => $request->email, 'phone' => $request->phone]);
         $contact->district_id = $request->district;
         $contact->save();
-        
+
         return $contact->id;
     }
 
