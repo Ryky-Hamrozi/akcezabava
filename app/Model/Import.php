@@ -3,6 +3,8 @@
 namespace App\Model;
 
 use App\Model\Event;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use JonnyW\PhantomJs\Client;
@@ -54,7 +56,8 @@ class Import extends Model
         echo "Dokonceno";
     }
 
-	public static function importEvents($eventsArray) {
+	public static function importEvents($eventsArray, $ignoreDup = false) {
+        require_once('../vendor/simple_html_dom/simple_html_dom.php');
 		$i = 0;
 
 		$udalostiErrors = [];
@@ -84,7 +87,19 @@ class Import extends Model
                     'fb_id' => $event['fb_id'],
                     'error' => 'Udalost již existuje v databazi byla přeskočena'
                 );
-				continue;
+
+                if(!$ignoreDup) {
+                    continue;
+                } else {
+                    $event = self::vratOstatniInformaceZEventu($Event->fb_url);
+                    $event['fb_id'] = $Event->fb_id;
+                    $event['fb_url'] = $Event->fb_url;
+                    $event['approved'] = $Event->approved;
+
+                    if(!isset($event['district'])) {
+                        continue;
+                    }
+                }
 			}
 
 
@@ -124,7 +139,10 @@ class Import extends Model
 				}
 			}
 
-			$Event = new Event();
+			if(!$ignoreDup) {
+                $Event = new Event();
+            }
+
 			$Event->fill([
 //				'id' => $event['id'],
 				'fb_id' => $event['fb_id'],
@@ -142,6 +160,7 @@ class Import extends Model
 				'contact_id' => 1,
 				'keywords' => isset($event['keywords']) ? $event['keywords'] : ""
 			]);
+
 			$Event->save();
 
 			$image = self::curlImageDownload($event['image']);

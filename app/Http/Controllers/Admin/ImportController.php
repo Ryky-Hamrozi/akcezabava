@@ -73,6 +73,11 @@ class ImportController extends AdminBaseController{
 
 	}
 
+	public function preimportuj() {
+	    $events = Event::all()->where('fb_id', '!=', null);
+	    Import::importEvents($events->toArray(), true);
+    }
+
 
 
 }

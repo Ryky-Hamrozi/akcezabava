@@ -23,6 +23,7 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
     Route::get('import-events', 'ImportController@import');
     Route::get('import-delete', 'ImportController@delete');
     Route::get('testCurl', 'ImportController@testCurl');
+    Route::get('preimportuj', 'ImportController@preimportuj');
     Route::get('curlEvents', 'ImportController@curlEvents');
     Route::get('event','EventController@index')->name('event.index');
     Route::post('event','EventController@store')->name('event.store');
