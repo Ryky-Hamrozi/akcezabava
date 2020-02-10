@@ -21,11 +21,11 @@
     <script src="{{asset('js/admin/jquery-2.1.4.js')}}"></script>
     <script src="{{asset('js/front/slick.min.js')}}"></script>
     <script src="{{asset('js/admin/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('js/admin/select2.full.min.js')}}"></script> 
+    <script src="{{asset('js/admin/select2.full.min.js')}}"></script>
     <script src="{{asset('js/front/web.js')}}"></script>
 
-    <script src="{{asset('js/front/functionality.js')}}"></script>
- 
+    <script src="{{asset('js/front/functionality.js')}}?v=1"></script>
+
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
@@ -117,15 +117,15 @@
                 </div>
                 <div>
                     <h3>KONTAKT</h3>
-                    <p>Tomáš Gottwald</p>
-                    <p>Blažejské nám. 7</p>
-                    <p>Olomouc 77900</p>
+                    <p>Radio Haná s.r.o. <br> Blažejské náměstí 97/7 <br> 779 00 Olomouc</p>
+                    <p>Tel.: <a href="tel:585224035">585 224 035</a>, <a href="tel:777742621">777 742 621</a></p>
+                    <p>E-mail: <a href="mailto:info@akcezabava.cz">info@akcezabava.cz</a></p>
                 </div>
                 <div>
                     <h3>OBCHODNÍ ÚDAJE</h3>
-                    <p>Jana Foretníková</p>
-                    <p>Blažejské nám. 7</p>
-                    <p>Olomouc 77900</p>
+                    <p>Obchodní oddělení firmy Radio Haná</p>
+                    <p>Tel.: <a href="tel:585224035">585 224 035</a>, <a href="tel:777742621">777 742 621</a></p>
+                    <p>E-mail: <a href="mailto:reklama@akcezabava.cz">reklama@akcezabava.cz</a></p>
                 </div>
                 <div class="socials">
                     <a class="social" title="Facebook" href=""><img src="{{asset('img/front/facebook.svg')}}" alt="Facebook"></a>

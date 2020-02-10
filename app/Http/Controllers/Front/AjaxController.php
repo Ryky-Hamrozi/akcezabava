@@ -8,6 +8,7 @@ use App\Model\Category;
 use App\Model\District;
 use App\Model\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends FrontBaseController {
 
@@ -88,5 +89,12 @@ class AjaxController extends FrontBaseController {
 
 		return $data;
 	}
+
+	public function addFileCount(Request $request) {
+        $fileId = $request->get('id');
+        $file = DB::table('files_downloads')->where('id', '=', $fileId)->get()->first();
+        $downloads = $file->downloads + 1;
+        DB::table('files_downloads')->where('id', '=', $fileId)->update(['downloads' => $downloads]);
+    }
 
 }

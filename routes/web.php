@@ -55,6 +55,8 @@ Route::namespace('Front')->group(function(){
 
     Route::get('/get-homepage-event-list','AjaxController@getHomepageEventList');
     Route::get('/get-filter-event-list','AjaxController@getFilterEventList');
+
+    Route::get('/addFileCount','AjaxController@addFileCount');
 });
 
 Route::namespace('Auth')->group(function(){

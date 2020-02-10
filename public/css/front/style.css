@@ -1006,6 +1006,17 @@ footer ul li a {
   transition: all .25s ease-in-out;
 }
 
+footer a {
+    color: #050505;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    color: #d71921;
+    transition: all .25s ease-in-out;
+}
+
+
 footer ul li a:hover {
   color: #d71921
 }
@@ -1718,9 +1729,9 @@ font-weight: bold;
 }
 
 .errors .alert.alert-danger {
-  
+
 background-color: #d71921;
-  
+
 color: white;
 }
 
@@ -1729,16 +1740,22 @@ color: white;
 }
 
 .akce-zabava-magazin p {
-margin-bottom: 7px;
-line-height: 18px;
+
+margin-bottom: 7px;
+
+line-height: 18px;
 }
 
 .akce-zabava-magazin h3 {
-  font-weight: bold;
-  margin-top: 25px;
-  margin-bottom: 10px;
+
+font-weight: bold;
+
+margin-top: 25px;
+
+margin-bottom: 10px;
 }
 
 .akce-zabava-magazin a {
-  color: #d71921;
+
+color: #d71921;
 }

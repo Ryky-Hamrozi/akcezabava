@@ -1,5 +1,12 @@
 $(function () {
 
+    $('body').on('click', '.js-file-download', function() {
+        $.ajax({
+            url: "/addFileCount",
+            data: {id: 1}
+        });
+    });
+
     $('body').on('click', '.js-homepage-events-link', function () {
 
         $categoryId = $(this).attr('data-category-id');

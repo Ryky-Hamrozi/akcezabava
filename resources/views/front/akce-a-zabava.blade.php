@@ -10,7 +10,8 @@
             <div class="dsc">
                 <h1>Akce zábava magazín</h1>
 
-                <p>pdf verze ke stažení <strong><a href="/Akce a zabava - cislo 1_web.pdf" target="_blank">zde</a></strong></p>
+
+                <p>pdf verze ke stažení <strong><a href="/Akce a zabava - cislo 1_web.pdf" target="_blank" class="js-file-download">zde</a></strong></p>
 
                 <p>Nový magazín pro OLOMOUC a okolí</p>
 

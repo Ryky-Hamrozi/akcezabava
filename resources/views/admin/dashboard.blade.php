@@ -67,6 +67,10 @@
             <p class="count-action"><strong>11465</strong>akcí celkem</p>
             <div id="donutchart" style="width: 440px; height: 300px;"  data-upcoming="{{$event->getUpcomingEventsCount()}}" data-for-approval="{{$event->getForApprovalEventsCount()}}" data-finished="{{$event->getFinishedEventsCount()}}"></div>
         </div>
+        <div class="flx sb-b">
+            @php($file = \Illuminate\Support\Facades\DB::table('files_downloads')->where('id', '=', 1)->get()->first())
+            <h2 class="title">{{$file->downloads}}<span>Počet stažení pdf souboru</span></h2>
+        </div>
     </div>
 
 

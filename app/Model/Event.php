@@ -140,6 +140,14 @@ class Event extends Model
         return $this->events()->count();
     }
 
+    public function getFacebookUrl() {
+        $return = $this->fb_url;
+        if ((!(substr($this->fb_url, 0, 7) == 'http://')) && (!(substr($this->fb_url, 0, 8) == 'https://'))) {
+            $return = 'http://' . $this->fb_url;
+        }
+        return $return;
+    }
+
     public function getUpcomingEventsCount(){
         return $this->upcomingEvents()->count();
     }
