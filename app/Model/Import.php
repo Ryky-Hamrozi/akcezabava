@@ -336,6 +336,8 @@ class Import extends Model
 
         if($title = $html->find('._42ef ._5gmw h1', 0)) {
             $info['title'] = $title->plaintext;
+        } else if($title = $html->find('._5gmv ._7wy h1', 0)) {
+            $info['title'] = $title->plaintext;
         }
 
 		if($place = $html->find('._3xd0._3slj div[class="_5xhp fsm fwn fcg"]', 0)) {
