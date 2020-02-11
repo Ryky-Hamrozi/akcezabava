@@ -1,9 +1,10 @@
 $(function () {
 
     $('body').on('click', '.js-file-download', function() {
+        $id = $(this).attr('data-id');
         $.ajax({
             url: "/addFileCount",
-            data: {id: 1}
+            data: {id: $id}
         });
     });
 
