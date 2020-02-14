@@ -34,7 +34,7 @@
                 <th>@sortablelink('date_from', 'ZAČÁTEK')</th>
                 <th>@sortablelink('date_to', 'KONEC')</th>
                 <th>@sortablelink('contact_id', 'POŘADATEL')</th>
-                <th>FOTO</th>
+                <th>@sortablelink('image.id', 'FOTO')</th>
                 <th>@sortablelink('updated_at', 'POSLEDNÍ ZMĚNA')</th>
                 <th>AKCE</th>
             </tr>

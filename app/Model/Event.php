@@ -12,7 +12,7 @@ class Event extends Model
 
     use Sortable;
 
-    public $sortable = ['title', 'date_from', 'date_to', 'district_id', 'place_id', 'created_at', 'fb_url', 'contact_id', 'updated_at'];
+    public $sortable = ['title', 'date_from', 'date_to', 'district_id', 'place_id', 'created_at', 'fb_url', 'contact_id', 'updated_at', 'image'];
 
     protected $guarded = ['id'];
 
@@ -83,6 +83,10 @@ class Event extends Model
 
     public function images(){
         return $this->morphMany('App\Model\Image','imageable');
+    }
+
+    public function image() {
+        return $this->hasOne('App\Model\Image', 'imageable_id');
     }
 
     public function banner() {

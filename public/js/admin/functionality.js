@@ -157,10 +157,11 @@ $(document).ready(function(){
         var id = button.attr('data-id');
         var url = button.attr('data-url');
         var token = button.attr('data-token');
+        var page = $('input[name="page"]').val();
         $.ajax({
             method: "POST",
             url: url,
-            data: { id: id, _token: token  },
+            data: { id: id, _token: token, page: page },
             success : function(response){
                 $('.js-flashes').html(response.flashes);
                 $('.js-events-table').html(response.events);

@@ -81,7 +81,7 @@
             <div class="container flx sb-c">
                 @if($searchAvailable)
                     <form class="searching flx" action="">
-                        <input type="text" name="q" placeholder="Vyhledávání..." value="">
+                        <input type="text" name="q" placeholder="Vyhledávání..." value="{{request() ? request()->get('q') : ''}}">
                         <button type="submit"></button>
                     </form>
                 @endif

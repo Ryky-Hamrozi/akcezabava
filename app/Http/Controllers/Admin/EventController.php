@@ -9,6 +9,7 @@ use App\Model\Image;
 use App\Model\Import;
 use Illuminate\Http\Request;
 use App\Model\Event;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class EventController extends AdminBaseController
@@ -51,7 +52,10 @@ class EventController extends AdminBaseController
         $events = $this->requests($request, $events);
         $events = $events->paginate($this->itemsPerPage);
 
-        return view('admin.event.forApprovalList')->with(['events' => $events]);
+        return view('admin.event.forApprovalList')->with([
+                'events' => $events,
+                'request' => $request
+        ]);
     }
 
     public function finished(Request $request)
@@ -126,6 +130,7 @@ class EventController extends AdminBaseController
 
 
     public function approve(Request $request){
+
         $eventId = $request->get('id');
         $event = Event::findOrFail($eventId);
         if($event->place_id && $event->category->id){
@@ -138,12 +143,16 @@ class EventController extends AdminBaseController
             flash("Před schválením je nutné nastavit místo a kategorii.")->error();
         }
         $eventsCount  = Event::where('approved','=',0)->get();
-        $events  = Event::where('approved','=',0)->orderBy('id', 'desc')->paginate($this->itemsPerPage);
+
+        $events = Event::sortable()->where('approved','=',0)->orderBy('id', 'desc');
+        $events = $this->requests($request, $events);
+        $events = $events->paginate($this->itemsPerPage);
 
         return response()->json([
             'flashes' => view('flash::message')->render(),
             'events' => view('admin.event.components.events_table_forApproval', ['events' => $events])->render(),
-            'eventsCount' => count($eventsCount->all())
+            'eventsCount' => count($eventsCount->all()),
+            'request' => $request
         ]);
 
 

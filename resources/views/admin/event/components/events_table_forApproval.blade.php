@@ -8,8 +8,8 @@
         <th>@sortablelink('date_from', 'ZAČÁTEK')</th>
         <th>@sortablelink('date_to', 'KONEC')</th>
         <th>@sortablelink('fb_url', 'ZDROJ')</th>
-        <th>FOTO</th>
-        <th>@sortablelink('created_at', 'VLOŽENO')</th>
+        <th>@sortablelink('image.id', 'FOTO')</th>
+        <th>@sortablelink('updated_at', 'Poslední změna')</th>
         <th>SCHVÁLIT</th>
         <th>AKCE</th>
     </tr>
@@ -25,7 +25,7 @@
             <td data-name="Konec">{{$event->date_to}}</td>
             <td data-name="Zdroj">@if($event->fb_url)<span class="facebook">facebook</span>@else Uživatel @endif</td>
             <td data-name="Foto">{{$event->getImagesInfo()}}</td>
-            <td data-name="Vloženo">{{$event->created_at}}</td>
+            <td data-name="Vloženo">{{$event->updated_at}}</td>
             <td data-name="Schválit">
                 <div class="schvalit-chck">
                     <label title="Schválit?">

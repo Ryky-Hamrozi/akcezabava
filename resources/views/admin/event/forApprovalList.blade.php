@@ -20,6 +20,7 @@
     <div class="js-events-table">
         @include('admin.event.components.events_table_forApproval')
     </div>
+    <input type="hidden" name="page" value="{{isset($request) ? $request->input('page') : 0}}">
 </form>
 
 {{-- strankovani --}}

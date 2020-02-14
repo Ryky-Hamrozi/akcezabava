@@ -87,6 +87,13 @@ class EventController extends FrontBaseController
 
     public function detail(Event $event){
 
+        $now = strtotime('now' );
+        $dateTo = date_create_from_format('d. m. Y  H:i', $event->date_to);;
+
+        if($dateTo->getTimestamp() < $now) {
+            return abort(404);
+        }
+
         $similarEvents = Event::where([
             'approved' => 1,
             'category_id' => $event->category_id,
