@@ -89,7 +89,7 @@ class EventController extends FrontBaseController
 
         $similarEvents = Event::where([
             'approved' => 1,
-            'category_id' => $event->category_id,            
+            'category_id' => $event->category_id,
         ])
         ->where('id','!=',$event->id)
         ->where('date_from','>=',date('Y-m-d'))->get();
@@ -98,7 +98,7 @@ class EventController extends FrontBaseController
             ->where('location', '=', Banner::POSITION_EVENT_DETAIL)
             ->where('event_id', '=', $event->id)
             ->first();
-     
+
         return view('front.event.detail',['event' => $event, 'similarEvents' => $similarEvents, 'eventBanner' => $eventBanner]);
     }
 
@@ -118,6 +118,10 @@ class EventController extends FrontBaseController
 
         $eventList = Event::where('approved','=', true);
 //        $eventList = Event::paginate($this->itemsPerPage);
+
+        if($request->input('title')) {
+            $eventList->where('title', 'LIKE', '%'.$request->input('title').'%');
+        }
 
         if($categoryId){
             $eventList->where('category_id',(int)$categoryId);

@@ -596,7 +596,21 @@ header .button, header .menu-btn {
   margin-right: 10px;
 }
 
-.full-search select, .datepicker-box input {
+input.form-control {
+    width: 789px;
+    margin-bottom: 15px;
+    height: 60px;
+    line-height: 58px;
+    border: 1px solid #dadada;
+    background: #fff;
+    padding: 0 40px 0 15px;
+    color: #050505;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .25s ease-in-out;
+}
+
+.full-search select, .datepicker-box input  {
   height: 60px;
   line-height: 58px;
   border: 1px solid #dadada;
@@ -1718,9 +1732,9 @@ font-weight: bold;
 }
 
 .errors .alert.alert-danger {
-  
+
 background-color: #d71921;
-  
+
 color: white;
 }
 
@@ -1729,16 +1743,22 @@ color: white;
 }
 
 .akce-zabava-magazin p {
-margin-bottom: 7px;
-line-height: 18px;
+
+margin-bottom: 7px;
+
+line-height: 18px;
 }
 
 .akce-zabava-magazin h3 {
-  font-weight: bold;
-  margin-top: 25px;
-  margin-bottom: 10px;
+
+font-weight: bold;
+
+margin-top: 25px;
+
+margin-bottom: 10px;
 }
 
 .akce-zabava-magazin a {
-  color: #d71921;
+
+color: #d71921;
 }
