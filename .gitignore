@@ -4,6 +4,7 @@
 /public/banner
 /public/temp
 /public/storage
+/public/phantomJs/*
 /storage/*.key
 /vendor
 .env
