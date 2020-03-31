@@ -63,6 +63,15 @@ return [
             ]) : [],
         ],
 
+        'mysql2' => [
+            'driver' => env('DB_CONNECTION_2'),
+            'host' => env('DB_HOST_2'),
+            'port' => env('DB_PORT_2'),
+            'database' => env('DB_DATABASE_2'),
+            'username' => env('DB_USERNAME_2'),
+            'password' => env('DB_PASSWORD_2'),
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

@@ -10,14 +10,29 @@ use App\Model\Contact;
 
 class ContactController extends AdminBaseController
 {
+
+    public function __construct()
+    {
+        $this->searchAvailable = true;
+
+        parent::__construct();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::paginate($this->itemsPerPage);
+        $contacts = Contact::orderBy('id', 'desc');
+
+        if($request->get('q')) {
+            $contacts->where('name', 'like', '%'.$request->get('q').'%');
+        }
+
+        $contacts = $contacts->paginate($this->itemsPerPage);
+
         return view('admin.contact.list')->with(['contacts' => $contacts]);
     }
 

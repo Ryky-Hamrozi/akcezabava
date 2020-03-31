@@ -11,9 +11,10 @@ class StoreEventRequest extends BaseRequest
     public function rules()
     {
         $today = date('d.m.Y');
-        return [
-            'name' => 'required',
-            'description' => 'required',
+
+        $request = $this->toArray();
+
+        $required = [
             'date-start' => "required|date_format:d.m.Y|after_or_equal:$today",
             'date-end' => "required|date_format:d.m.Y",
             'time-start' => "required|date_format:H:i",
@@ -24,5 +25,11 @@ class StoreEventRequest extends BaseRequest
             'phone' => 'sometimes|required',
             'user_place' => 'sometimes|required',
         ];
+
+        if(!$request['fb_url']) {
+            $required = array_merge($required, ['name' => 'required', 'description' => 'required',]);
+        }
+
+        return $required;
     }
 }

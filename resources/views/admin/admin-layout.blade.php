@@ -54,16 +54,17 @@
                     <a href="/admin/event">AKCE</a>
                     <ul class="submenu">
                         <li class="{{Request::is('admin/event') ? 'active' : ''}}"><a href="/admin/event">Všechny</a></li>
-                        <li class="{{Request::is('admin/event/for-approval') ? 'active' : ''}}"><a href="/admin/event/for-approval">Ke schválení <span>{{$eventsDissaproved}}</span></a></li>
+                        <li class="{{Request::is('admin/event/for-approval') ? 'active' : ''}}"><a href="/admin/event/for-approval">Ke schválení <span class="js-approval-count">{{$eventsDissaproved}}</span></a></li>
                         <li class="{{Request::is('admin/event/finished') ? 'active' : ''}}"><a href="/admin/event/finished">Ukončené</a></li>
                         <li class="{{Request::is('admin/event/upcoming') ? 'active' : ''}}"><a href="/admin/event/upcoming">Připravované</a></li>
                     </ul>
                 </li>
+                <li class="{{Request::is('admin/category') ? 'active' : ''}}"><a href="/admin/category">Kategorie</a></li>
                 <li class="{{Request::is('admin/contact') ? 'active' : ''}}"><a href="/admin/contact">KONTAKTY</a></li>
-                <li class="has-sub {{Request::is('admin/category','admin/district') ? 'active' : ''}}"><a href="/admin/category">STATISTIKY</a>
+                <li class="has-sub {{Request::is('admin/district') ? 'active' : ''}}"><a href="/admin/district">STATISTIKY</a>
                     <ul class="submenu">
                         {{--<li><a href="">Klíčová slova</a></li>--}}
-                        <li class="{{Request::is('admin/category') ? 'active' : ''}}"><a href="/admin/category">Kategorie</a></li>
+
                         <li class="{{Request::is('admin/district') ? 'active' : ''}}"><a href="/admin/district">Okresy</a></li>
                     </ul>
                 </li>
@@ -78,10 +79,12 @@
     <main>
         <header>
             <div class="container flx sb-c">
-                <form class="searching flx" action="">
-                    <input type="text" placeholder="Vyhledávání..." required>
-                    <button type="submit"></button>
-                </form>
+                @if($searchAvailable)
+                    <form class="searching flx" action="">
+                        <input type="text" name="q" placeholder="Vyhledávání..." value="{{request() ? request()->get('q') : ''}}">
+                        <button type="submit"></button>
+                    </form>
+                @endif
                 <div class="right-content flx-c">
                     <a class="user flx-c">
                         <span class="name"><strong>admin@leksys.cz</strong>systém administrátor</span><img src="{{asset('img/admin/user.svg')}}" alt="User">
@@ -102,14 +105,16 @@
 
         <div class="page-content">
             <div class="container {{Request::is('admin/dashboard') ? 'flx-w row' : '' }}">
-                @include('flash::message')
-                @if($errors)                   
-                    <div>
+                <div class="js-flashes">
+                    @include('flash::message')
+                </div>
+                @if($errors)
+                    <div class="">
                         @foreach($errors->all() as $message)
-                            <p>{{$message}}</p>
+                            <div class="alert alert-danger">{{$message}}</div>
                         @endforeach
                     </div>
-                @endif                
+                @endif
                 @yield('content')
             </div>
         </div>

@@ -23,6 +23,7 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function
     Route::get('import-events', 'ImportController@import');
     Route::get('import-delete', 'ImportController@delete');
     Route::get('testCurl', 'ImportController@testCurl');
+    Route::get('preimportuj', 'ImportController@preimportuj');
     Route::get('curlEvents', 'ImportController@curlEvents');
     Route::get('event','EventController@index')->name('event.index');
     Route::post('event','EventController@store')->name('event.store');
@@ -54,6 +55,8 @@ Route::namespace('Front')->group(function(){
 
     Route::get('/get-homepage-event-list','AjaxController@getHomepageEventList');
     Route::get('/get-filter-event-list','AjaxController@getFilterEventList');
+
+    Route::get('/addFileCount','AjaxController@addFileCount');
 });
 
 Route::namespace('Auth')->group(function(){

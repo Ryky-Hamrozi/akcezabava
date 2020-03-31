@@ -88,6 +88,10 @@ class ImageGenerator {
 		$newImagePath = public_path() . self::TEMP_FOLDER_NAME . "/" . $id . "_" . self::$conf[$confIndex][self::THUMBNAIL_PREFIX] . "." . $ext;
 		$urlPath = self::TEMP_FOLDER_NAME . "/" . $id . "_" . self::$conf[$confIndex][self::THUMBNAIL_PREFIX] . "." . $ext;
 
+		if(!file_exists($path)) {
+            return "";
+        }
+
 		/// Pokud fotka existuje uz negeneruj
 		if(file_exists($newImagePath)) {
 			return $urlPath . "?v=" . filemtime($newImagePath) ;

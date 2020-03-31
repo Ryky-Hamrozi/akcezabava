@@ -8,6 +8,7 @@ use App\Model\Category;
 use App\Model\District;
 use App\Model\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends FrontBaseController {
 
@@ -62,6 +63,9 @@ class AjaxController extends FrontBaseController {
 			$eventList->where('district_id',(int)$districtId);
 		}
 
+        /// Ukoncene akce nezobrazovat
+        $eventList->whereDate('date_to', '>=', date('Y-m-d') .' 00:00:00');
+
 		if($date) {
 			$eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
 		} else {
@@ -69,6 +73,8 @@ class AjaxController extends FrontBaseController {
 //				->whereDate('date_from', '>=', date('Y-m-d'))
 //				->whereDate('date_to', '>=', date('Y-m-d'));
 		}
+
+
 
 		$eventList->orderBy('date_from');
 
@@ -83,5 +89,12 @@ class AjaxController extends FrontBaseController {
 
 		return $data;
 	}
+
+	public function addFileCount(Request $request) {
+        $fileId = $request->get('id');
+        $file = DB::table('files_downloads')->where('id', '=', $fileId)->get()->first();
+        $downloads = $file->downloads + 1;
+        DB::table('files_downloads')->where('id', '=', $fileId)->update(['downloads' => $downloads]);
+    }
 
 }

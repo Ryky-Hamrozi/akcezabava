@@ -17,13 +17,16 @@ class AdminBaseController extends Controller
 
     protected $itemsPerPage;
 
+    protected $searchAvailable;
+
     public function __construct(){
         $this->itemsPerPage = 6;
 
         $events = Event::all()->where('approved', '=', 0);
 
         View::share([
-            'eventsDissaproved' => $events->count()
+            'eventsDissaproved' => $events->count(),
+            'searchAvailable' => $this->searchAvailable
         ]);
 
     }

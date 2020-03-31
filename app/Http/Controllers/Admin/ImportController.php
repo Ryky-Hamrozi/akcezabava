@@ -61,13 +61,22 @@ class ImportController extends AdminBaseController{
 		]);
 	}
 
-
 	public function testCurl() {
+        set_time_limit(99999);
+	    Import::importPlaces();
+	    die;
+	    $content = Import::phantomJsGetContent("https://www.facebook.com/events/793174614428313/");
+	    dd($content);
 		$image = Import::curlImageDownload("https://scontent-prg1-1.xx.fbcdn.net/v/t1.0-9/71027177_2140754056028984_7270803062833283072_o.jpg?_nc_cat=109&_nc_ohc=vXfrF0gutn0AQm55Ozc89qkF4MJedspeX97iNvwvRTuZ2TyCFwQGQduYw&_nc_ht=scontent-prg1-1.xx&oh=cbffa29bc82b9d5303637c3ef26994eb&oe=5E9A1730");
 //		$content = Import::phantomJsGetContent("https://www.facebook.com/events/discovery/");
 		dd($image);
 
 	}
+
+	public function preimportuj() {
+	    $events = Event::all()->where('fb_id', '!=', null);
+	    Import::importEvents($events->toArray(), true);
+    }
 
 
 

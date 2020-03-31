@@ -3,7 +3,10 @@
 namespace App\Model;
 
 use App\Model\Event;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use JonnyW\PhantomJs\Client;
 use simple_html_dom;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,7 +28,36 @@ class Import extends Model
 		return $out;
 	}
 
-	public static function importEvents($eventsArray) {
+	public static function importPlaces() {
+        $mista = DB::connection('mysql2')->table('mista');
+        foreach ($mista->get()->toArray() as $misto) {
+
+            $placeStr = $misto->nazev. " " . $misto->ulice . " " . $misto->cp . ", " . $misto->mesto . " " . $misto->psc;
+
+            if(!$District = District::where('name', '=', $misto->mesto)->first()) {
+                $District = new District();
+                $District->fill([
+                    'name' => $misto->mesto
+                ]);
+                $District->save();
+            }
+
+            if(!$Place = Place::where('name', '=', $placeStr)->first()) {
+                $Place = new Place();
+                $Place->fill([
+                    'name' => trim($placeStr),
+                    'district_id' => $District->id
+                ]);
+                $Place->save();
+            }
+        }
+
+
+        echo "Dokonceno";
+    }
+
+	public static function importEvents($eventsArray, $ignoreDup = false) {
+        require_once('../vendor/simple_html_dom/simple_html_dom.php');
 		$i = 0;
 
 		$udalostiErrors = [];
@@ -50,7 +82,24 @@ class Import extends Model
 
 			/// Event existuje
 			if($Event = Event::where('fb_id', '=', $event['fb_id'])->first()) {
-				continue;
+                $udalostiErrors[] = array(
+                    'fb_url' => $event['fb_url'],
+                    'fb_id' => $event['fb_id'],
+                    'error' => 'Udalost již existuje v databazi byla přeskočena'
+                );
+
+                if(!$ignoreDup) {
+                    continue;
+                } else {
+                    $event = self::vratOstatniInformaceZEventu($Event->fb_url);
+                    $event['fb_id'] = $Event->fb_id;
+                    $event['fb_url'] = $Event->fb_url;
+                    $event['approved'] = $Event->approved;
+
+                    if(!isset($event['district'])) {
+                        continue;
+                    }
+                }
 			}
 
 
@@ -90,7 +139,10 @@ class Import extends Model
 				}
 			}
 
-			$Event = new Event();
+			if(!$ignoreDup) {
+                $Event = new Event();
+            }
+
 			$Event->fill([
 //				'id' => $event['id'],
 				'fb_id' => $event['fb_id'],
@@ -108,6 +160,7 @@ class Import extends Model
 				'contact_id' => 1,
 				'keywords' => isset($event['keywords']) ? $event['keywords'] : ""
 			]);
+
 			$Event->save();
 
 			$image = self::curlImageDownload($event['image']);
@@ -184,7 +237,6 @@ class Import extends Model
 				$udalost = [];
 
 				if($nazev){
-					$udalost['title'] = $nazev->plaintext;
 					$href = $nazev->href;
 					$url = $href;
 					$exploded = explode('/', parse_url($url, PHP_URL_PATH));
@@ -193,18 +245,21 @@ class Import extends Model
 					$udalost['fb_id'] = $id;
 
 					$udalostInfo = self::vratOstatniInformaceZEventu("https://www.facebook.com/events/".$udalost['fb_id']);
+
+                    //// Udalosti ktere vyzaduji nejspis prihlaseni preskocit
+                    if(!is_array($udalostInfo)) {
+                        $udalostiErrors[] = array(
+                            'fb_url' => $udalost['fb_url'],
+                            'fb_id' => $udalost['fb_id'],
+                            'error' => 'Událost vyžaduje přihlášení byla přeskočena'
+                        );
+                        continue;
+                    }
+
 					$udalost = array_merge($udalost, $udalostInfo);
 
-					//// Udalosti ktere vyzaduji nejspis prihlaseni preskocit
-					//// Nema vice nez dve informace
-					if(count($udalostInfo) < 2) {
-						$udalostiErrors[] = array(
-							'fb_url' => $udalost['fb_url'],
-							'fb_id' => $udalost['fb_id'],
-							'error' => 'Událost vyžaduje přihlášení byla přeskočena'
-						);
-						continue;
-					}
+
+
 				} else {
 				}
 
@@ -273,6 +328,18 @@ class Import extends Model
 
 		$info = [];
 
+
+		//// Udalost vyzaduje prihlaseni
+		if($html->find('._5jb3', 0)) {
+            return false;
+        }
+
+        if($title = $html->find('._42ef ._5gmw h1', 0)) {
+            $info['title'] = $title->plaintext;
+        } else if($title = $html->find('._5gmv ._7wy h1', 0)) {
+            $info['title'] = $title->plaintext;
+        }
+
 		if($place = $html->find('._3xd0._3slj div[class="_5xhp fsm fwn fcg"]', 0)) {
 			$place = $place->plaintext;
 			if(!$place) {
@@ -330,6 +397,10 @@ class Import extends Model
 			$info['image'] = false;
 		}
 
+		///// Pokud se event neimportuje tak jak by mel
+		if(!isset($info['description'])) {
+		    $info = self::vratOstatniInformaceZEventu($eventUrl);
+        }
 
 		return $info;
 	}
@@ -362,7 +433,24 @@ class Import extends Model
 		if($response->getStatus() === 200) {
 
 			// Dump the requested page content
-			return $response->getContent();
+            $res = $response->getContent();
+
+            $html = new simple_html_dom();
+            $html->load($res);
+
+            if($title = $html->find('title', 0)) {
+                if($title->plaintext == 'Redirecting...') {
+                    $script = $html->find('script', 1);
+                    $str = $script->innertext;
+                    $str = str_replace('window.location.replace("', '', $str);
+                    $str = str_replace("\\", '', $str);
+                    $str = str_replace('");', '', $str);
+                    $redirectUrl = $str;
+                    return self::phantomJsGetContent($redirectUrl);
+                }
+            }
+
+            return $res;
 		}
 
 		echo $client->getLog();
@@ -433,6 +521,9 @@ class Import extends Model
 		}
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		$data = curl_exec( $ch );
+		if(!$data) {
+		    self::curlImageDownload($url);
+        }
 		return $data;
 
 	}

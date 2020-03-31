@@ -627,11 +627,11 @@ header {
   border-radius: 0 3px 3px 0;
   border: 1px solid #d8dde1;
   border-left: 0;
-  background: url("img/search.svg") no-repeat center;
+  background: url("/img/admin/search.svg") no-repeat center;
 }
 
 .searching button:hover {
-  background: #f0f0f0 url("img/search.svg") no-repeat center;
+  background: #f0f0f0 url("/img/admin/search.svg") no-repeat center;
 }
 
 .user .name {
@@ -1309,9 +1309,9 @@ border: 1px solid #eee;
 }
 
 .alert-danger {
-  
+
 background-color: red;
-  
+
 color: white;
 }
 
@@ -1333,3 +1333,15 @@ color: white;
   background-color: #eff4f7;
   border-radius: 15px;
 }
+
+.alert {
+    padding: 15px;
+    border: 0;
+}
+
+.alert-success {
+    background-color: #13c04a;
+    color: white;
+}
+
+

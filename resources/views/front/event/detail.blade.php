@@ -31,7 +31,7 @@
                 <li><img src="{{asset('img/front/placered.svg')}}" alt="Místo">{{$event->place->name}}</li>
                 @if($event->fb_url)
                     <li><img src="{{asset('img/front/sharered.svg')}}" alt="Adresa"><a
-                                href="{{$event->fb_url}}" target="_blank">{{$event->fb_url}}</a></li>
+                                href="{{$event->getFacebookUrl()}}" target="_blank">{{$event->fb_url}}</a></li>
                 @endif
             </ul>
         </div>

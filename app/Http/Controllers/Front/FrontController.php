@@ -33,15 +33,15 @@ class FrontController extends FrontBaseController
 
         if($categoryId){
             $events = Event::where('approved','=', 1)
-//                        ->where('date_from','>=',date('Y-m-d'))
-//                        ->where('date_to', '>=', date('Y-m-d'))
+                        ->where('date_from','>=',date('Y-m-d'))
+                        ->where('date_to', '>=', date('Y-m-d'))
                         ->where('category_id',(int)$categoryId)
                         ->orderBy('date_from');
         }
         else{
             $events = Event::where('approved','=', 1)
-//                        ->where('date_from','>=',date('Y-m-d'))
-//                        ->where('date_to', '>=', date('Y-m-d'))
+                        ->where('date_from','>=',date('Y-m-d'))
+                        ->where('date_to', '>=', date('Y-m-d'))
                         ->orderBy('date_from');
         }
 

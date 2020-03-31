@@ -87,6 +87,13 @@ class EventController extends FrontBaseController
 
     public function detail(Event $event){
 
+        $now = strtotime('now' );
+        $dateTo = date_create_from_format('d. m. Y  H:i', $event->date_to);;
+
+        if($dateTo->getTimestamp() < $now) {
+            return abort(404);
+        }
+
         $similarEvents = Event::where([
             'approved' => 1,
             'category_id' => $event->category_id,
@@ -135,10 +142,14 @@ class EventController extends FrontBaseController
             $eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
         }
 
+        /// Ukoncene akce nezobrazovat
+        $eventList->whereDate('date_to', '>=', date('Y-m-d', $date) .' 00:00:00');
+
         /** @var $eventList Builder */
 
         $eventList = $eventList->paginate($this->itemsPerPage);
         $eventList->withPath('?' . $request->getQueryString());
+
 
         return view('front.event.list', [
             'events' => $eventList,
