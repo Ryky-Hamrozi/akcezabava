@@ -20,7 +20,7 @@ class AdminBaseController extends Controller
     protected $searchAvailable;
 
     public function __construct(){
-        $this->itemsPerPage = 6;
+        $this->itemsPerPage = 20;
 
         $events = Event::all()->where('approved', '=', 0);
 

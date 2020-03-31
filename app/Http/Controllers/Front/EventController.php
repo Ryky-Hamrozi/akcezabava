@@ -10,6 +10,7 @@ use App\Model\Event;
 use App\Model\Place;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends FrontBaseController
@@ -115,8 +116,17 @@ class EventController extends FrontBaseController
         $categoryId = $request->input('category_id');
         $date = strtotime($request->input('date_from'));
 
-        $allCategories = Category::all();
-        $districts = District::all();
+
+        $allCategories = Category::whereHas('events', function(Builder $q) {
+            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+//            $q->where('approved', '=', true);
+        })->get();
+
+        $districts = District::whereHas('events', function(Builder $q) {
+            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+//            $q->where('approved', '=', true);
+        })->get();
+
 
         $selectedDistrict = District::find($districtId);
         $selectedCategory = Category::find($categoryId);
@@ -126,39 +136,46 @@ class EventController extends FrontBaseController
         $eventList = Event::where('approved','=', true);
 //        $eventList = Event::paginate($this->itemsPerPage);
 
+
+
+        if($request->input('category_id')){
+            $eventList->where('category_id',$categoryId);
+        }
+
+        if($request->input('district_id')) {
+            $eventList->where('district_id',$districtId);
+        }
+
+        if($request->input('date_from')) {
+            $eventList->whereDate('date_from', '<=', date('Y-m-d', $date) .' 00:00:00');
+            $eventList->whereDate('date_to', '>=', date('Y-m-d', $date) .' 00:00:00');
+        }
+
         if($request->input('title')) {
             $eventList->where('title', 'LIKE', '%'.$request->input('title').'%');
         }
 
-        if($categoryId){
-            $eventList->where('category_id',(int)$categoryId);
-        }
-
-        if($districtId) {
-            $eventList->where('district_id',(int)$districtId);
-        }
-
-        if($date) {
-            $eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
-        }
-
         /// Ukoncene akce nezobrazovat
-        $eventList->whereDate('date_to', '>=', date('Y-m-d', $date) .' 00:00:00');
+        $eventList->whereDate('date_to', '>=', date('Y-m-d'));
 
         /** @var $eventList Builder */
+
+        $totalEvents = $eventList->count();
 
         $eventList = $eventList->paginate($this->itemsPerPage);
         $eventList->withPath('?' . $request->getQueryString());
 
 
         return view('front.event.list', [
+            'totalEvents' => $totalEvents,
             'events' => $eventList,
             'allCategories' => $allCategories,
             'districts' => $districts,
             'selectedDistrict' => $selectedDistrict,
             'selectedDate' => $date,
             'selectedCategory' => $selectedCategory,
-            'actionBanner' => $actionBanner
+            'actionBanner' => $actionBanner,
+            'request' => $request
         ]);
     }
 

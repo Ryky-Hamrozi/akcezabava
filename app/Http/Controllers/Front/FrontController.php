@@ -8,6 +8,7 @@ use App\Model\Banner;
 use App\Model\Category;
 use App\Model\District;
 use App\Model\Event;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
@@ -23,25 +24,33 @@ class FrontController extends FrontBaseController
      */
     public function index()
     {
-        $allCategories = Category::all();
+
+        $allCategories = Category::whereHas('events', function($q) {
+            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+//            $q->where('approved', '=', true);
+        })->get();
+
         $categories = $allCategories->take(5);
 
-        $districts = District::all();
+        $districts = District::whereHas('events', function($q) {
+            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+//            $q->where('approved', '=', true);
+        })->get();
 
 
         $categoryId = request()->category;
 
         if($categoryId){
             $events = Event::where('approved','=', 1)
-                        ->where('date_from','>=',date('Y-m-d'))
-                        ->where('date_to', '>=', date('Y-m-d'))
+                        ->where('date_from','>=',date('Y-m-d H:i:s'))
+                        ->where('date_to', '>=', date('Y-m-d H:i:s'))
                         ->where('category_id',(int)$categoryId)
                         ->orderBy('date_from');
         }
         else{
             $events = Event::where('approved','=', 1)
-                        ->where('date_from','>=',date('Y-m-d'))
-                        ->where('date_to', '>=', date('Y-m-d'))
+                        ->where('date_from','>=',date('Y-m-d H:i:s'))
+                        ->where('date_to', '>=', date('Y-m-d H:i:s'))
                         ->orderBy('date_from');
         }
 

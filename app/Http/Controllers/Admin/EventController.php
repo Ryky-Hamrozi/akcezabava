@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Model\Event;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends AdminBaseController
 {
@@ -26,7 +27,7 @@ class EventController extends AdminBaseController
     public function requests(Request $request, $events) {
         if($request->get('q')) {
             $events->where('title', 'like', '%'.$request->get('q').'%');
-            $events->where('description', 'like', '%'.$request->get('q').'%');
+            $events->orWhere('description', 'like', '%'.$request->get('q').'%');
         }
 
         return $events;
@@ -60,7 +61,7 @@ class EventController extends AdminBaseController
 
     public function finished(Request $request)
     {
-        $events = Event::sortable()->where('date_to','<',now())->orderBy('id', 'desc');
+        $events = Event::sortable()->orderBy('id', 'asc')->where('date_to','<',now());
         $events = $this->requests($request, $events);
         $events = $events->paginate($this->itemsPerPage);
 
@@ -133,7 +134,7 @@ class EventController extends AdminBaseController
 
         $eventId = $request->get('id');
         $event = Event::findOrFail($eventId);
-        if($event->place_id && $event->category->id){
+        if($event->place_id && $event->category_id){
             $event->approved = $event->approved == 1 ? 0 : 1;
             $event->save();
 

@@ -6,7 +6,7 @@
     <div class="full-search">
         <form action="{{route('list-event')}}" class="" id="js-events-filter-form">
             <div class="calcw flx">
-                <input type="text" class="form-control" name="title" placeholder="Zde napište název akce kterou hledáte">
+                <input type="text" class="form-control" name="title" value="{{isset($request) ? $request->input('title') : ''}}" placeholder="Zde napište název akce kterou hledáte">
             </div>
             <div class="flx">
 
@@ -15,21 +15,21 @@
                         <option value="">Všechny okresy</option>
                         @foreach($districts as $district)
                             <option value="{{$district->id}}"
-                                    @if(isset($selectedDistrict) && $selectedDistrict->id == $district->id) selected @endif>{{$district->name}}</option>
+                                    @if(isset($request) && $request->input('district_id') == $district->id) selected @endif>{{$district->name}}</option>
                         @endforeach
                     </select>
 
                     <div class="datepicker-box">
                         <input class="datepick" name="date_from" autocomplete="off" type="text" placeholder="Kdykoliv"
                                id="dp1569323369937"
-                               value="@if(isset($selectedDate) && $selectedDate){{date('d.m.Y', $selectedDate)}}@endif">
+                               value="@if(isset($request) && $request->input('date_from')){{ date('d.m.Y', strtotime($request->input('date_from'))) }}@endif">
                     </div>
 
                     <select name="category_id" id="">
                         <option value="">Všechny druhy akcí</option>
                         @foreach($allCategories as $category)
                             <option value="{{$category->id}}"
-                                    @if(isset($selectedCategory) && $selectedCategory->id == $category->id) selected @endif>{{$category->name}}</option>
+                                    @if(isset($request) && $request->input('category_id') == $category->id) selected @endif>{{$category->name}}</option>
                         @endforeach
                     </select>
                 </div>

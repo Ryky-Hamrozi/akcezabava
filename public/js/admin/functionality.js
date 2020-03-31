@@ -5,19 +5,19 @@ $(document).ready(function(){
         //tinyMCE.editors=[];
     });
 
-    $('.addAction').on('click',function(event){
+    $('body').on('click','.addAction',function(event){
         getModalContent($(this));
     });
 
-    $('.get-modal-content').on('click',function(){
+    $('body').on('click','.get-modal-content', function(){
         getModalContent($(this));
     });
 
-    $(".ac-btn[name=smazat]").on("click", function (event) {
+    $("body").on("click", '.ac-btn[name=smazat]', function (event) {
         setRemoveModal($(this));
     });
 
-    $('#remove-item').on('click',function(){
+    $('body').on('click', '#remove-item', function(){
         removeFromServer($(this));
     });
 

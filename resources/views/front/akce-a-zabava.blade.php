@@ -24,6 +24,7 @@
 
                 <p><a href="https://www.akcezabava.cz">www.akcezabava.cz</a></p>
 
+                {{--}}
 
                 <h3>O nás:</h3>
                 <p>
@@ -386,6 +387,8 @@
                     Městys Velký Újezd, Olomoucká 15
                 </p>
                 <br/>
+
+                {{--}}
             </div>
 
         </div>
