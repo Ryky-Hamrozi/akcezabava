@@ -5,6 +5,8 @@
 /public/temp
 /public/storage
 /public/phantomJs/*
+/public/Akce a zabava - cislo 2_web.pdf
+/public/Akce zabava - cislo 3_web.pdf
 /storage/*.key
 /vendor
 .env
