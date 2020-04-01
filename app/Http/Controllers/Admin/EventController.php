@@ -40,7 +40,7 @@ class EventController extends AdminBaseController
      */
     public function index(Request $request)
     {
-        $events = Event::sortable()->whereDate('date_to', '>=', date('y.m-d h:i:s'));
+        $events = Event::sortable();//->whereDate('date_to', '>=', date('y.m-d h:i:s'));
         $events = $this->requests($request, $events);
         $events = $events->paginate($this->itemsPerPage);
 
@@ -114,7 +114,10 @@ class EventController extends AdminBaseController
             }
 
 
-        } else {
+        } elseif($Event = Event::where('title', '=', $request->input('name'))->first()) {
+            flash('Akce s názvem již existuje - ' . $request->input('name'))->error();
+        }
+        else {
             $event->store($request);
             flash('Akce byla úspěšně přidána')->success();
         }

@@ -155,8 +155,7 @@ class EventController extends FrontBaseController
             $eventList->where('title', 'LIKE', '%'.$request->input('title').'%');
         }
 
-        /// Ukoncene akce nezobrazovat
-        $eventList->whereDate('date_to', '>=', date('Y-m-d'));
+        $eventList->whereDate('date_to', '>=', date('Y-m-d H:i:s'));
 
         /** @var $eventList Builder */
 
