@@ -79,6 +79,10 @@
             @php($file = \Illuminate\Support\Facades\DB::table('files_downloads')->where('id', '=', 3)->get()->first())
             <h2 class="title">{{$file->downloads}}<span>Počet stažení pdf souboru - číslo 3</span></h2>
         </div>
+        <div class="flx sb-b">
+            @php($file = \Illuminate\Support\Facades\DB::table('files_downloads')->where('id', '=', 4)->get()->first())
+            <h2 class="title">{{$file->downloads}}<span>Počet stažení pdf souboru - číslo 4</span></h2>
+        </div>
     </div>
 
 
