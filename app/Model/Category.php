@@ -21,4 +21,7 @@ class Category extends Model
         return $topCategories->get();
     }
 
+    public function events() {
+        return $this->hasMany(Event::class, 'category_id', 'id');
+    }
 }

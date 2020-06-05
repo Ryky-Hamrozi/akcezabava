@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Model\Event;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends AdminBaseController
 {
@@ -39,7 +40,7 @@ class EventController extends AdminBaseController
      */
     public function index(Request $request)
     {
-        $events = Event::sortable()->whereDate('date_to', '>=', date('y.m-d h:i:s'));
+        $events = Event::sortable();//->whereDate('date_to', '>=', date('y.m-d h:i:s'));
         $events = $this->requests($request, $events);
         $events = $events->paginate($this->itemsPerPage);
 
@@ -60,7 +61,7 @@ class EventController extends AdminBaseController
 
     public function finished(Request $request)
     {
-        $events = Event::sortable()->where('date_to','<',now())->orderBy('id', 'desc');
+        $events = Event::sortable()->orderBy('id', 'asc')->where('date_to','<',now());
         $events = $this->requests($request, $events);
         $events = $events->paginate($this->itemsPerPage);
 
@@ -112,7 +113,6 @@ class EventController extends AdminBaseController
                 flash('Akce byla úspěšně naimportována - ' . $udalost['title'])->success();
             }
 
-
         } else {
 
             if($Event = Event::where('title', '=', $request->get('name'))->first()) {
@@ -139,7 +139,7 @@ class EventController extends AdminBaseController
 
         $eventId = $request->get('id');
         $event = Event::findOrFail($eventId);
-        if($event->place_id && $event->category->id){
+        if($event->place_id && $event->category_id){
             $event->approved = $event->approved == 1 ? 0 : 1;
             $event->save();
 

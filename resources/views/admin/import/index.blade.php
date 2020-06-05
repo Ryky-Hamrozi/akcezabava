@@ -34,7 +34,7 @@
                 <td><strong>{{pathinfo($file['file'], PATHINFO_BASENAME)}}</strong></td>
                 <td>
                     <?php
-                        $limit = 5;
+                        $limit = 20;
                         if($file['count'] < $limit) {
                             $limit = $file['count'];
                         }

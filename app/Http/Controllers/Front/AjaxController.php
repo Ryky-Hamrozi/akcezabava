@@ -29,6 +29,7 @@ class AjaxController extends FrontBaseController {
 	public function getFilterEventList(Request $request) {
 		$data = $this->getEventsByRequest($request);
 		$eventList = $data['eventList'];
+        $totalEvents = $data['totalEvents'];
 
 		$selectedDistrict = District::find($data['districtId']);
 		$selectedCategory = Category::find($data['categoryId']);
@@ -39,11 +40,13 @@ class AjaxController extends FrontBaseController {
 
 		return response()->json([
 			'events' => view('front.event.components.eventSearchFormListResult',[
+                'totalEvents' => $totalEvents,
 				'events' => $eventList,
 				'selectedDistrict' => $selectedDistrict,
 				'selectedDate' => $date,
 				'selectedCategory' => $selectedCategory,
-				'actionBanner' => $actionBanner
+				'actionBanner' => $actionBanner,
+                'request' => $request
 			])->render(),
 		]);
 	}
@@ -54,6 +57,11 @@ class AjaxController extends FrontBaseController {
 		$date = strtotime($request->input('date_from'));
 
 		$eventList = Event::where('approved','=', true);
+
+        if($request->input('title')) {
+            $eventList->where('title', 'LIKE', '%'.$request->input('title').'%');
+            $eventList->orderBy('title');
+        }
 
 		if($categoryId){
 			$eventList->where('category_id',(int)$categoryId);
@@ -67,7 +75,9 @@ class AjaxController extends FrontBaseController {
         $eventList->whereDate('date_to', '>=', date('Y-m-d') .' 00:00:00');
 
 		if($date) {
-			$eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
+//			$eventList->whereDate('date_from', '>=', date('Y-m-d', $date) .' 00:00:00');
+            $eventList->whereDate('date_from', '<=', date('Y-m-d H:i:s', $date));
+            $eventList->whereDate('date_to', '>=', date('Y-m-d H:i:s', $date));
 		} else {
 //			$eventList
 //				->whereDate('date_from', '>=', date('Y-m-d'))
@@ -76,12 +86,16 @@ class AjaxController extends FrontBaseController {
 
 
 
+
 		$eventList->orderBy('date_from');
 
-		$eventList = $eventList->paginate($this->itemsPerPage);
+        $totalEvents = $eventList->count();
+
+        $eventList = $eventList->paginate($this->itemsPerPage);
 		//$eventList->appends([$request]);
 		$eventList->withPath('?' . $request->getQueryString());
 
+        $data['totalEvents'] = $totalEvents;
 		$data['eventList'] = $eventList;
 		$data['districtId'] = $districtId;
 		$data['categoryId'] = $categoryId;

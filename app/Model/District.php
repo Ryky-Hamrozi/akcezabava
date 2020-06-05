@@ -24,4 +24,8 @@ class District extends Model
         return $topDistricts->get();
     }
 
+    public function events() {
+        return $this->hasMany(Event::class, 'district_id', 'id');
+    }
+
 }

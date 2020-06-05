@@ -596,7 +596,21 @@ header .button, header .menu-btn {
   margin-right: 10px;
 }
 
-.full-search select, .datepicker-box input {
+input.form-control {
+    width: 789px;
+    margin-bottom: 15px;
+    height: 60px;
+    line-height: 58px;
+    border: 1px solid #dadada;
+    background: #fff;
+    padding: 0 40px 0 15px;
+    color: #050505;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .25s ease-in-out;
+}
+
+.full-search select, .datepicker-box input  {
   height: 60px;
   line-height: 58px;
   border: 1px solid #dadada;
