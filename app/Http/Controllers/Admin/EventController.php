@@ -26,7 +26,7 @@ class EventController extends AdminBaseController
     public function requests(Request $request, $events) {
         if($request->get('q')) {
             $events->where('title', 'like', '%'.$request->get('q').'%');
-            $events->where('description', 'like', '%'.$request->get('q').'%');
+            $events->orWhere('description', 'like', '%'.$request->get('q').'%');
         }
 
         return $events;
@@ -114,6 +114,12 @@ class EventController extends AdminBaseController
 
 
         } else {
+
+            if($Event = Event::where('title', '=', $request->get('name'))->first()) {
+                flash('Udalost se stejným názvem existuje v databazi')->error();
+                return response()->redirectToRoute('event.index');
+            }
+
             $event->store($request);
             flash('Akce byla úspěšně přidána')->success();
         }

@@ -64,6 +64,9 @@ class Import extends Model
 
 		foreach($eventsArray as $event) {
 
+//		    dump($event);
+//		    continue;
+
 			//// 10 prvku by měla mit udalost
 			if(count($event) < 7) {
 				$udalostiErrors[] = array(
@@ -102,23 +105,28 @@ class Import extends Model
                 }
 			}
 
+            $District = "";
+            if(isset($event['district'])) {
+                if (!$District = District::where('name', '=', $event['district'])->first()) {
+                    $District = new District();
+                    $District->fill([
+                        'name' => $event['district']
+                    ]);
+                    $District->save();
+                }
+            }
 
-			if(!$District = District::where('name', '=', $event['district'])->first()) {
-				$District = new District();
-				$District->fill([
-					'name' => $event['district']
-				]);
-				$District->save();
-			}
-
-			if(!$Place = Place::where('name', '=', $event['place'])->first()) {
-				$Place = new Place();
-				$Place->fill([
-					'name' => trim($event['place']),
-					'district_id' => $District->id
-				]);
-				$Place->save();
-			}
+            $Place = "";
+            if(isset($event['place'])) {
+                if (!$Place = Place::where('name', '=', $event['place'])->first()) {
+                    $Place = new Place();
+                    $Place->fill([
+                        'name' => trim($event['place']),
+                        'district_id' => $District->id
+                    ]);
+                    $Place->save();
+                }
+            }
 
 			$categories = [];
 			/// Category?
@@ -153,8 +161,8 @@ class Import extends Model
 				'date_from' => $event['date_from'],
 				'date_to' => $event['date_to'],
 				'approved' => $event['approved'],
-				'district_id' => $District->id,
-				'place_id' => $Place->id,
+				'district_id' => $District ? $District->id : NULL,
+				'place_id' => $Place ? $Place->id : NULL,
 				'categories' => implode(',', $categories),
 				'category_id' => isset($Category) ? $Category->id : 1,
 				'contact_id' => 1,

@@ -56,9 +56,9 @@
                                             <option value="{{$place->id}}" {{isset($item->place) && $item->place->id == $place->id ? "selected" : ''}}>{{$place->name}}</option>
                                         @endforeach
                                     @else
-                                        @if(App\Model\District::all()->first())
+                                        @if(App\Model\District::all())
                                             @foreach(App\Model\District::all()->first()->places as $place)
-                                                <option value="{{$place->id}}" {{isset($item) && $item->place->id == $place->id ? "selected" : ''}}>{{$place->name}}</option>
+                                                <option value="{{$place->id}}" {{isset($item->place) && $item->place->id == $place->id ? "selected" : ''}}>{{$place->name}}</option>
                                             @endforeach
                                         @endif
                                     @endif
@@ -75,7 +75,7 @@
                             <label for="place">Místo</label>
                             <select id="place" name="place">
                                 {{-- tady bude vyhledavaci select --}}
-                                @if(isset($item))
+                                @if(isset($item->district))
                                     @foreach($item->district->places as $place)
                                         <option value="{{$place->id}}" {{isset($item->$place) && $item->place->id == $place->id ? "selected" : ''}}>{{$place->name}}</option>
                                     @endforeach
@@ -118,9 +118,13 @@
                     <div class="box-input w50">
                         <label for="contact">Pořadatel</label>
                         <select id="contact" name="contact">
-                            @foreach(App\Model\Contact::all() as $contact)
-                                <option value="{{$contact->id}}" {{isset($item) && $item->contact->id == $contact->id ? "selected" : ''}}>{{$contact->name}}</option>
+                            @php($contacts = App\Model\Contact::all())
+                            @if(count($contacts))
+                            @foreach($contacts as $contact)
+                                <option value="{{$contact->id}}" {{isset($item->contact) && $item->contact->id == $contact->id ? "selected" : ''}}>{{$contact->name}}</option>
                             @endforeach
+                            @endif
+
                         </select>
                     </div>
                 </div>
