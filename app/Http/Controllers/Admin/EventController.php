@@ -114,8 +114,16 @@ class EventController extends AdminBaseController
             }
 
         } else {
+            $dateStartStr = $request->get('date-start') .' : '.$request->get('time-start');
+            $dateEndStr = $request->get('date-end') .' : '.$request->get('time-end');
+            $dateStart = date_create_from_format('d.m.Y : H:i',$dateStartStr);
+            $dateEnd = date_create_from_format('d.m.Y : H:i',$dateEndStr);
 
-            if($Event = Event::where('title', '=', $request->get('name'))->first()) {
+            if($Event = Event::where('title', '=', $request->get('name'))
+                ->where('date_from', '=', $dateStart)
+                ->where('date_to', '=', $dateEnd)
+                ->first()
+            ) {
                 flash('Udalost se stejným názvem existuje v databazi')->error();
                 return response()->redirectToRoute('event.index');
             }
