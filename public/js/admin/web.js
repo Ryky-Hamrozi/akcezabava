@@ -83,17 +83,17 @@ $(document).ready(function(event){
 
   if ($(window).width() < 1024) {
     // navigate devices
-    $("nav ul > li.has-sub a").on("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      $(this).parent().toggleClass("active");
-      $(this).parent().siblings().removeClass("active");
-      $(".submenu-container").click(function(event){
-        event.stopPropagation();
-      });
-      $(this).next().toggle();
-      $(this).parent().siblings().find("a").next().hide();
-    });
+    // $("nav ul > li.has-sub a").on("click", function (event) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   $(this).parent().toggleClass("active");
+    //   $(this).parent().siblings().removeClass("active");
+    //   $(".submenu-container").click(function(event){
+    //     event.stopPropagation();
+    //   });
+    //   $(this).next().toggle();
+    //   $(this).parent().siblings().find("a").next().hide();
+    // });
 
     // user logged hover
     $(".logged").on("click", function () {

@@ -37,7 +37,7 @@
                         <label for="district">Okres</label>
                     <select id="district" name="district" class="dependent-select-parent" data-child="#place" data-url="{{route('getDistrictPlaces')}}" data-token="{{csrf_token()}}">
                             @foreach(App\Model\District::all() as $district)
-                                <option value="{{$district->id}}" {{isset($item->district) && $item->district->id == $district->id ? "selected" : ''}}>{{$district->name}}</option>
+                                <option value="{{$district->id}}" {{!isset($item->district) && $district->priority == 1 ? 'selected' : ''}} {{isset($item->district) && $item->district->id == $district->id ? "selected" : ''}}>{{$district->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -58,7 +58,7 @@
                                     @else
                                         @if(App\Model\District::all())
                                             @foreach(App\Model\District::all()->first()->places as $place)
-                                                <option value="{{$place->id}}" {{isset($item->place) && $item->place->id == $place->id ? "selected" : ''}}>{{$place->name}}</option>
+                                                <option value="{{$place->id}}" {{$place->priority == 1 ? "selected" : ''}}>{{$place->name}}</option>
                                             @endforeach
                                         @endif
                                     @endif

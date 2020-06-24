@@ -20,11 +20,12 @@
     <div class="js-events-table">
         @include('admin.event.components.events_table_forApproval')
     </div>
+    <div class="js-pagination">
+        {{-- strankovani --}}
+        @include('admin.components.pagination',['items'=> $events])
+    </div>
     <input type="hidden" name="page" value="{{isset($request) ? $request->input('page') : 0}}">
 </form>
-
-{{-- strankovani --}}
-@include('admin.components.pagination',['items'=> $events])
 
 @endsection
 

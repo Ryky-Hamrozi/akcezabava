@@ -165,6 +165,7 @@ class EventController extends AdminBaseController
         return response()->json([
             'flashes' => view('flash::message')->render(),
             'events' => view('admin.event.components.events_table_forApproval', ['events' => $events])->render(),
+            'pagination' => view('admin.components.pagination', ['items' => $events])->render(),
             'eventsCount' => count($eventsCount->all()),
             'request' => $request
         ]);

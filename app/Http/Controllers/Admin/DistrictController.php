@@ -7,6 +7,7 @@ use App\Http\Requests\StoreDistrictRequest;
 use App\Http\Requests\UpdateDistrictRequest;
 use Illuminate\Http\Request;
 use App\Model\District;
+use Illuminate\Support\Facades\DB;
 
 class DistrictController extends AdminBaseController
 {
@@ -31,13 +32,25 @@ class DistrictController extends AdminBaseController
     public function store(StoreDistrictRequest $request)
     {
         $name = $request->get('name');
-        District::create(['name' => $name]);
+        $priority = $request->get('priority');
+        if($priority) {
+            DB::table('districts')->update([
+                'priority' => 0
+            ]);
+        }
+        District::create(['name' => $name, 'priority' => $priority]);
         return response()->redirectToRoute('district.index');
     }
 
     public function update(UpdateDistrictRequest $request, District $district){
         $name = $request->get('name');
-        $district->update(['name' => $name]);
+        $priority = $request->get('priority');
+        if($priority) {
+            DB::table('districts')->update([
+                'priority' => 0
+            ]);
+        }
+        $district->update(['name' => $name, 'priority' => $priority]);
         return response()->redirectToRoute('district.index');
     }
 

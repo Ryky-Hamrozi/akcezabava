@@ -118,12 +118,16 @@ class EventController extends FrontBaseController
 
 
         $allCategories = Category::whereHas('events', function(Builder $q) {
-            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+//            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+                $q->where('date_from','>=',date('Y-m-d H:i:s'));
+                $q->where('date_to', '>=', date('Y-m-d H:i:s'));
 //            $q->where('approved', '=', true);
         })->get();
 
         $districts = District::whereHas('events', function(Builder $q) {
-            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+//            $q->where('date_to', '>=', date('Y-m-d H:i:s', time()));
+            $q->where('date_from','>=',date('Y-m-d H:i:s'));
+            $q->where('date_to', '>=', date('Y-m-d H:i:s'));
 //            $q->where('approved', '=', true);
         })->get();
 
@@ -159,7 +163,9 @@ class EventController extends FrontBaseController
 
         /** @var $eventList Builder */
 
-        $totalEvents = $eventList->count();
+        $totalEventList = $eventList;
+
+        $totalEvents = $totalEventList->groupBy('title')->get()->count();
 
         $eventList = $eventList->paginate($this->itemsPerPage);
         $eventList->withPath('?' . $request->getQueryString());

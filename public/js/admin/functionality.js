@@ -165,6 +165,7 @@ $(document).ready(function(){
             success : function(response){
                 $('.js-flashes').html(response.flashes);
                 $('.js-events-table').html(response.events);
+                $('.js-pagination').html(response.pagination);
                 $('.js-approval-count').html(response.eventsCount);
             },
             error : function(response){

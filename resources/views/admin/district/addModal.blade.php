@@ -23,6 +23,12 @@
                             <input id="name" name="name" type="text" value="{{$item->name ?? ''}}">
                         </div>
                     </div>
+                    <div class="box-input w100">
+                        <div class="box-input w100">
+                            <label for="priority">Nastavit jako prioritní</label>
+                            <input id="priority" name="priority" type="checkbox" {{isset($item) && $item->priority == 1 ? 'checked' : ''}} value="1">
+                        </div>
+                    </div>
                 </div>
                 <div class="center-button">
                     <button class="button" type="submit" name="button">ULOŽIT</button>

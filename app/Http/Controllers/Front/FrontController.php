@@ -45,15 +45,16 @@ class FrontController extends FrontBaseController
                         ->where('date_from','>=',date('Y-m-d H:i:s'))
                         ->where('date_to', '>=', date('Y-m-d H:i:s'))
                         ->where('category_id',(int)$categoryId)
-                        ->orderBy('date_from');
+                        ->orderBy('date_from', 'asc');
         }
         else{
             $events = Event::where('approved','=', 1)
                         ->where('date_from','>=',date('Y-m-d H:i:s'))
                         ->where('date_to', '>=', date('Y-m-d H:i:s'))
-                        ->orderBy('date_from');
+                        ->orderBy('date_from', 'asc');
         }
 
+//        $events->groupBy('title');
         $events->paginate($this->itemsPerPage);
 
         $carouselBanners = Banner::all()->where('location','=', Banner::POSITION_CAROUSEL);
@@ -63,7 +64,7 @@ class FrontController extends FrontBaseController
         return view('front.homepage',[
             'categories' => $categories,
             'allCategories' => $allCategories,
-            'events' => $events->get(),
+            'events' => $events->get()->unique(),
             'districts' => $districts,
             'categoryId' => $categoryId,
             'carouselBanners' => $carouselBanners,
