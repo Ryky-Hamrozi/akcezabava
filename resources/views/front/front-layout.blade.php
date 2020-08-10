@@ -42,6 +42,7 @@
     <link rel="icon" type="image/png" href="{{asset("img/favicon-32x32.png")}}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{{asset("img/favicon-16x16.png")}}" sizes="16x16" />
 
+    <script data-ad-client="ca-pub-1378986189880626" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 </head>
 <body>
