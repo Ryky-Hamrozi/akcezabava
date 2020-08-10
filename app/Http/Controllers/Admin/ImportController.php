@@ -50,12 +50,13 @@ class ImportController extends AdminBaseController{
 
 		$data = Import::getEventsArray($file, $from, $to);
 		$udalostiErrors = $data['udalostiErrors'];
+		$nazev = $data['udalostiArray'][0]['title'];
 		$data = Import::importEvents($data['udalostiArray']);
 
 		$udalostiErrors = array_merge($udalostiErrors, $data['udalostiErrors']);
 
 		return response()->json([
-			'success' => 1,
+			'nazev' => $nazev,
 			'id' => $fileId . "_" . $from,
 			'errors' => json_encode($udalostiErrors)
 		]);

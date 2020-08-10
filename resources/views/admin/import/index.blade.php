@@ -3,7 +3,6 @@
 @section('title', 'Import')
 
 @section('content')
-
     <div class="flx sb-c mt30 devpow">
         <h1 class="title">Import akcí</h1>
 
@@ -21,12 +20,12 @@
         <tr>
             <th></th>
             <th>NÁZEV</th>
-            <th class="text-right">Importovat po částech</th>
+            <th width="70%" class="text-center">Importovat</th>
             <th>Smazat soubor</th>
         </tr>
         </thead>
         <tbody>
-        @php($j = 0)
+        @php($j = 1)
         @if($filesInfo)
         @foreach($filesInfo as $file)
             <tr class="">
@@ -41,28 +40,37 @@
                     ?>
 
                         <table class="table">
-                            @for($i = 0; $i < $file['count']; $i = $i + $limit)
+                            @php($i = 0)
                                 <tr>
-                                    <td>
-                                        {{$i}}
-                                        - @if($i + $limit > $file['count']){{$file['count']}}@else{{$i + $limit}}@endif
-                                    </td>
                                     <td class="text-center">
+                                        {{--}}
                                         <a id="{{$j}}_{{$i}}"
                                            href="import-events?file={{$file['file']}}&file_id={{$j}}&from={{$i}}&to=@if($i + $limit > $file['count']){{$file['count']}}@else{{$i + $limit}}@endif"
                                            class="ajax-import">
                                             <img src="{{asset('img/admin/plus_black.svg')}}" alt="Importovat" class="button-import">
                                             <div class="loader"></div>
                                         </a>
-                                        <div class="js-import-errors-{{$j}}_{{$i}}">
+                                        {{--}}
+                                        <div class="js-import-button-content js-import-button-content-{{$j}}">
+                                            <img src="{{asset('img/admin/plus_black.svg')}}" alt="Importovat" class="button-import" data-count="{{$file['count']}}" data-id="{{$j}}" data-href="import-events?file={{$file['file']}}&file_id={{$j}}">
+
+                                            <div class="js-progress js-progress-{{$j}}" style="display: none">
+                                                <div class="myProgress " >
+                                                    <div class="myBar"></div>
+                                                </div>
+                                                <div class="imported">
+                                                    Importovano akci <span class="js-counter">0</span>/{{$file['count']}}
+                                                </div>
+                                            </div>
 
                                         </div>
+                                        <div class="js-import-errors-{{$j}}">
+
+                                        </div>
+                                        Celkem událostí - {{$file['count']}}
                                     </td>
                                 </tr>
-                            @endfor
                         </table>
-
-                    Celkem událostí - {{$file['count']}}
                 </td>
                 <td>
                     <a href="import-delete?file={{$file['file']}}" class="" title="Smazat" data-tooltip="smazat"
@@ -83,3 +91,5 @@
     @include('admin.event.addModal')
     @include('admin.components.removeModal')
 @endsection
+
+

@@ -198,35 +198,86 @@ $(document).ready(function(){
         });
     }
 
-    $('body').on('click', '.ajax-import', function() {
-        $link = $(this);
-        $link.find('.loader').show();
-        $link.find('img').hide();
-        $.ajax({
-            url: $link.attr('href')
-        }).done(function(data) {
-            $link = $('#'+data.id);
-            $link.find('img').attr('src', '/img/admin/checked_green.svg').show();
-            $link.find('.loader').hide();
+    var i = 0;
+    function move(elem, count) {
 
-            if(data.errors) {
+    }
 
-                $errorsArray = JSON.parse(data.errors);
-                $errors = "";
+    i = 0;
+    function importEvents(progressBar, count, href, contentId) {
+        if (i == 0) {
+            var step = 100 / count;
+            var width = 0;
+            var id = setInterval(importEvent, 5000);
+        }
 
-                for($i = 0; $i < $errorsArray.length; $i++) {
-                    $fbUrl = $errorsArray[$i].fb_url;
-                    $error = $errorsArray[$i].error;
+        function importEvent() {
+            if(i == 0) {
+                $from = 0;
+                $counted = 0;
+            }
+            i = 1;
+            if($from >= count - 1) {
+                i = 0;
+                clearInterval(id);
+            }
 
-                    $errors += '<div class="alert alert-danger"><a href="'+($fbUrl)+'" target="_blank">' + ($fbUrl) +'</a> <br> ' + ($error) +' </div>';
+            $.ajax({
+                url: "asdasd",//href + "&from=" + parseInt($from) + "&to=" + parseInt( $from + 1),
+                error: function(e) {
+                    $('.js-import-errors-'+contentId).prepend('<div class="alert alert-danger">500 ERROR - Špatný request - server je přetížen</div>');
+                }
+            },
+            ).done(function(data) {
+                frame();
+
+               if(data.errors.length) {
+                    $errorsArray = JSON.parse(data.errors);
+                    $errors = "";
+
+                    for($i = 0; $i < $errorsArray.length; $i++) {
+                        $fbUrl = $errorsArray[$i].fb_url;
+                        $error = $errorsArray[$i].error;
+
+                        $errors += '<div class="alert alert-danger"><a href="'+($fbUrl)+'" target="_blank">' + ($fbUrl) +'</a> <br> ' + ($error) +' </div>';
+                    }
+                    if($errors) {
+                        $('.js-import-errors-'+contentId).prepend($errors);
+                    } else {
+                        $counted++;
+                        $('.js-import-errors-'+contentId).prepend('<div class="alert alert-success">Akce úspěšně naimportována: '+data.nazev+' </div>');
+                    }
                 }
 
-                $link.attr('href', '');
+                $('.js-progress-'+contentId + ' .js-counter').html(parseInt($counted));
+            });
 
-                $link.parent().find('.js-import-errors-'+data.id).html($errors);
+            $from++;
+
+
+            function frame() {
+                if (width >= 100) {
+                    i = 0;
+                } else {
+                    width = width + step;
+                    progressBar.css('width', width + "%");
+                    progressBar.html(parseInt(width) + "%");
+                }
             }
-        });
+        }
 
-        return false;
+
+    }
+
+    $('body').on('click', '.js-import-button-content img', function () {
+        $(this).hide();
+        $(this).parent().find('.js-progress').show();
+
+        $progressBar = $(this).parent().find('.myProgress .myBar');
+        $count = $(this).attr('data-count');
+        $href = $(this).attr('data-href');
+        $id = $(this).attr('data-id');
+
+        importEvents($progressBar, $count, $href, $id);
     });
 });
