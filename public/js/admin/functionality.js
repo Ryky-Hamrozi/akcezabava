@@ -215,6 +215,7 @@ $(document).ready(function(){
             if(i == 0) {
                 $from = 0;
                 $counted = 0;
+                $errorCount = 0;
             }
             i = 1;
             if($from >= count - 1) {
@@ -223,7 +224,7 @@ $(document).ready(function(){
             }
 
             $.ajax({
-                url: "asdasd",//href + "&from=" + parseInt($from) + "&to=" + parseInt( $from + 1),
+                url: href + "&from=" + parseInt($from) + "&to=" + parseInt( $from + 1),
                 error: function(e) {
                     $('.js-import-errors-'+contentId).prepend('<div class="alert alert-danger">500 ERROR - Špatný request - server je přetížen</div>');
                 }
@@ -243,6 +244,7 @@ $(document).ready(function(){
                     }
                     if($errors) {
                         $('.js-import-errors-'+contentId).prepend($errors);
+                        $errorCount++;
                     } else {
                         $counted++;
                         $('.js-import-errors-'+contentId).prepend('<div class="alert alert-success">Akce úspěšně naimportována: '+data.nazev+' </div>');
@@ -250,6 +252,7 @@ $(document).ready(function(){
                 }
 
                 $('.js-progress-'+contentId + ' .js-counter').html(parseInt($counted));
+                $('.js-progress-'+contentId + ' .js-counter-error').html(parseInt($errorCount));
             });
 
             $from++;

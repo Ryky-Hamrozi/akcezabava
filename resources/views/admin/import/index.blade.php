@@ -59,7 +59,9 @@
                                                     <div class="myBar"></div>
                                                 </div>
                                                 <div class="imported">
-                                                    Importovano akci <span class="js-counter">0</span>/{{$file['count']}}
+                                                    <strong>
+                                                        Importovano akci <span class="js-counter">0</span>/{{$file['count']}} přeskočeno <span class="js-counter-error">0</span>
+                                                    </strong>
                                                 </div>
                                             </div>
 
