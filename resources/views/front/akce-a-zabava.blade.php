@@ -14,6 +14,7 @@
                 <p>pdf verze ke stažení - Akce a zabava - číslo 2 <strong><a href="/Akce a zabava - cislo 2_web.pdf" target="_blank" class="js-file-download" data-id="2">zde</a></strong></p>
                 <p>pdf verze ke stažení - Akce a zabava - číslo 3 <strong><a href="/Akce zabava - cislo 3_web.pdf" target="_blank" class="js-file-download" data-id="3">zde</a></strong></p>
                 <p>pdf verze ke stažení - Akce a zabava - číslo 4 <strong><a href="/Akce a zabava - cerven 2020_web.pdf" target="_blank" class="js-file-download" data-id="4">zde</a></strong></p>
+                <p>pdf verze ke stažení - Akce a zabava - číslo 5 <strong><a href="/Akce a zabava - rijen 2020_web.pdf" target="_blank" class="js-file-download" data-id="5">zde</a></strong></p>
                 <br>
                 <p>Nový magazín pro OLOMOUC a okolí</p>
 
