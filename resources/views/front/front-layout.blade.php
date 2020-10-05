@@ -11,7 +11,7 @@
     <meta name="keywords" content="HTML,CSS,XML,JavaScript" />
     <meta name="author" content="LEKSYS s.r.o. www.leksys.cz" />
 
-    <link rel="stylesheet" media="screen" href="{{asset('css/front/style.css?')}}?v=1" />
+    <link rel="stylesheet" media="screen" href="{{asset('css/front/style.css?')}}?v=2" />
     <link rel="stylesheet" media="screen" href="{{asset('css/front/devices.css')}}" />
     <link rel="stylesheet" media="screen" href="{{asset('css/front/jquery-ui.min.css')}}" />
     <link rel="stylesheet" media="screen" href="{{asset('css/admin/select2.min.css')}}" />
