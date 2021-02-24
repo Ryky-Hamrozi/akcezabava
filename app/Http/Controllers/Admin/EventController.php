@@ -119,14 +119,14 @@ class EventController extends AdminBaseController
             $dateStart = date_create_from_format('d.m.Y : H:i',$dateStartStr);
             $dateEnd = date_create_from_format('d.m.Y : H:i',$dateEndStr);
 
-            if($Event = Event::where('title', '=', $request->get('name'))
+            /*if($Event = Event::where('title', '=', $request->get('name'))
                 ->where('date_from', '=', $dateStart)
                 ->where('date_to', '=', $dateEnd)
                 ->first()
             ) {
                 flash('Udalost se stejným názvem existuje v databazi')->error();
                 return response()->redirectToRoute('event.index');
-            }
+            }*/
 
             $event->store($request);
             flash('Akce byla úspěšně přidána')->success();
