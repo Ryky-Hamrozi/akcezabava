@@ -17,7 +17,7 @@ img {
 a {
 	text-decoration: none;
 	outline: none !important;
-  cursor: pointer;
+  /*cursor: pointer;*/
 }
 button {
   margin: 0;
@@ -921,6 +921,16 @@ input.form-control {
   width: calc(100% - 280px);
   height: 100%;
   margin-bottom: 0;
+}
+
+.article.big .box-img {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.fullsize {
+    width: 100% !important;
 }
 
 .article.big .dsc {

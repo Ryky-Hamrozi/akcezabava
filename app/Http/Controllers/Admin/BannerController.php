@@ -36,6 +36,7 @@ class BannerController extends AdminBaseController
         if($request->has('image')){
             $image = new Image();
             $image->uploadImage($request->file('image'),$banner);
+            ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_CAROUSEL, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_HOMEPAGE_ACTION, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_SIDE, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_TOP, $banner->id);
@@ -50,6 +51,7 @@ class BannerController extends AdminBaseController
             $banner->image->delete();
             $image = new Image();
             $image->uploadImage($request->file('image'),$banner);
+            ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_EVENT_HOMEPAGE_CAROUSEL, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_HOMEPAGE_ACTION, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_SIDE, $banner->id);
             ImageGenerator::deleteGeneratedImage(ImageGenerator::CONF_BANNER_TOP, $banner->id);

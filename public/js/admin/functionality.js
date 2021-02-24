@@ -283,4 +283,5 @@ $(document).ready(function(){
 
         importEvents($progressBar, $count, $href, $id);
     });
+
 });

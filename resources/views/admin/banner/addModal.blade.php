@@ -18,7 +18,7 @@
                 <div class="inputs flx-w row">
                     <div class="box-input w50">
                         <label for="name">Název</label>
-                        <input id="name" name="name" type="text"  value="{{$item->name ?? ''}}">
+                        <input id="name" name="name" type="text"  value="{{$item->name ?? ''}}" required>
                     </div>
                     <div class="box-input w50">
                         <label for="location">Umístění</label>
@@ -35,7 +35,7 @@
                         <label for="event">Akce</label>
                         <select id="event" name="event">
                             <option value="0" {{isset($item) && !isset($item->event) ? "selected" : ''}}>Nenastaveno</option>
-                            @foreach(App\Model\Event::all() as $event)
+                            @foreach(App\Model\Event::where('date_to', '>=', date('Y-m-d h:i:s'))->get() as $event)
                                 <option value="{{$event->id}}" {{isset($item->event) && $item->event->id == $event->id ? "selected" : ''}}>{{$event->title}}</option>
                             @endforeach
                         </select>

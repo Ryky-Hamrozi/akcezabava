@@ -1,6 +1,6 @@
 @foreach($actionBanner as $banner)
     <article class="p15 w33p reklama-prc">
-        <a href="{{$banner->url}}" target="_blank" class="article">
+        <a @if($banner->url)href="{{$banner->url}}"@endif target="_blank" class="article">
             @if($banner->getImagePath())
                 <?php
                 $actionBannerPath = "";

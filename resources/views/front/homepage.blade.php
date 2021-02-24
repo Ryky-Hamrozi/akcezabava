@@ -6,41 +6,57 @@
 
 
     @include('front.event.components.eventSearchForm',['districts' => $districts, 'allCategories' => $allCategories])
-    @if($carouselBanners->first())
+    @if(count($carouselBanners))
     <section class="recomended-for-u ds">
         <h1 class="title"><span>Vybrali jsme</span> pro vás</h1>
 
         <div class="slider flx-w arrows">
             @foreach($carouselBanners as $banner)
                 @php($event = $banner->event()->first())
-                @if(!$event) @continue @endif
-                <article>
-                    {{--<a href="@if(!$banner->url){{route('detail-event', ['event' => $event])}}@else{{$banner->url}}@endif" @if($banner->url)target="_blank"@endif class="article big">--}}
-                    <a href="{{route('detail-event', ['event' => $event])}}"  class="article big">
-                        <figure>
-                            <figcaption>
-                                <h2>{{$event->title}}</h2>
+                @if($event)
+                    <article>
+                        {{--<a href="@if(!$banner->url){{route('detail-event', ['event' => $event])}}@else{{$banner->url}}@endif" @if($banner->url)target="_blank"@endif class="article big">--}}
+                        <a href="{{route('detail-event', ['event' => $event])}}"  class="article big">
+                            <figure>
+                                <figcaption>
+                                    <h2>{{$event->title}}</h2>
 
-                                <div class="tag" style="background: #2d7bf0;">{{$event->category->name}}</div>
-                                <p class="date"><img src="{{asset("img/front/date.svg")}}" alt="">{{$event->getFormatedDate()}}</p>
+                                    <div class="tag" style="background: #2d7bf0;">{{$event->category->name}}</div>
+                                    <p class="date"><img src="{{asset("img/front/date.svg")}}" alt="">{{$event->getFormatedDate()}}</p>
 
-                                <p class="place"><img src="{{asset("img/front/place.svg")}}" alt="">{{$event->place->name}}</p>
+                                    <p class="place"><img src="{{asset("img/front/place.svg")}}" alt="">{{$event->place->name}}</p>
 
-                                <div class="dsc">{{strip_tags($event->description)}}</div>
-                            </figcaption>
-                            @if($event->getMainImage())
+                                    <div class="dsc">{{strip_tags($event->description)}}</div>
+                                </figcaption>
+                                @if($event->getMainImage())
+                                    <?php
+                                        $tempImagePath = \App\Model\ImageGenerator::generateImageAndGetUrlPath(
+                                            \App\Model\ImageGenerator::CONF_EVENT_HOMEPAGE_CAROUSEL,
+                                            $event->id,
+                                            $event->getMainImage()
+                                        );
+                                    ?>
+                                    <div class="box" style="background-image:url({{asset($tempImagePath)}})"></div>
+                                @endif
+                            </figure>
+                        </a>
+                    </article>
+                    @else
+                    <article>
+                        <a @if($banner->url)href="{{$banner->url}}"@endif  class="article big">
+                            <figure>
                                 <?php
-                                    $tempImagePath = \App\Model\ImageGenerator::generateImageAndGetUrlPath(
-                                        \App\Model\ImageGenerator::CONF_EVENT_HOMEPAGE_CAROUSEL,
-                                        $event->id,
-                                        $event->getMainImage()
-                                    );
+                                $tempImagePath = \App\Model\ImageGenerator::generateImageAndGetUrlPath(
+                                    \App\Model\ImageGenerator::CONF_EVENT_HOMEPAGE_CAROUSEL,
+                                    $banner->id,
+                                    $banner->getImagePath()
+                                );
                                 ?>
-                                <div class="box" style="background-image:url({{asset($tempImagePath)}})"></div>
-                            @endif
-                        </figure>
-                    </a>
-                </article>
+                                    <div class="box-img" style="background-image:url({{asset($tempImagePath)}})"></div>
+                            </figure>
+                        </a>
+                    </article>
+                @endif
             @endforeach
 
         </div>
